@@ -74,7 +74,7 @@ export default function Profile() {
           <CardContent>
             <div className="flex items-center gap-4">
               <Avatar className="h-16 w-16">
-                <AvatarImage src="/placeholder.svg" />
+                <AvatarImage src={details?.profilePicture || '/placeholder.svg'} />
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
               <div className="space-y-1">
