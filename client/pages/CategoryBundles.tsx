@@ -29,12 +29,13 @@ export default function CategoryBundles() {
           </BreadcrumbList>
         </Breadcrumb>
 
+        <div className="flex justify-end">
+          <button onClick={() => nav('/bundle_list_new')} className="inline-flex items-center px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Add New Product</button>
+        </div>
         <GenericProductsTable
           title={`Category: ${cat}`}
           items={items}
           includeCategory={false}
-          showAddButton
-          onAdd={() => nav('/bundle_list_new')}
         />
       </div>
     </Layout>
