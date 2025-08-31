@@ -56,6 +56,8 @@ import InternationalRateUpload from "./pages/Rates/InternationalRateUpload";
 import InternationalRates from "./pages/Rates/InternationalRates";
 import RateMappingTable from "./pages/Rates/RateMappingTable";
 import RateMappingCompare from "./pages/Rates/RateMappingCompare";
+import Profile from "./pages/Profile";
+import SettingsPage from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -360,6 +362,24 @@ const App = () => (
               element={
                 <ProtectedRoute adminOnly>
                   <RateMappingCompare />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Profile & Settings */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <SettingsPage />
                 </ProtectedRoute>
               }
             />
