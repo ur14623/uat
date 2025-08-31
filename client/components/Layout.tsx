@@ -164,22 +164,27 @@ const sidebarNavItems: NavigationItem[] = [
     roles: ["admin"],
     items: [
       {
-        title: "Roaming Rate Upload",
-        icon: Upload,
-        href: "/roaming_rate_upload",
-      },
-      {
-        title: "Roaming Rates",
+        title: "Roaming Rate",
         icon: Globe,
         href: "/roaming_rates",
       },
       {
-        title: "Rate Mapping Table",
+        title: "International Rate",
         icon: List,
         href: "/rate_mapping_table",
       },
       {
-        title: "Compare Tariff",
+        title: "Create New Roaming Rate",
+        icon: Upload,
+        href: "/roaming_rate_upload",
+      },
+      {
+        title: "Create New International Rate",
+        icon: Upload,
+        href: "/international_rate_upload",
+      },
+      {
+        title: "Compare Rate Tariff",
         icon: RefreshCw,
         href: "/rate_mapping_compare",
       },
