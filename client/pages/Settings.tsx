@@ -3,25 +3,21 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Home, Settings as SettingsIcon } from 'lucide-react';
+import { Home, Settings as SettingsIcon, Lock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function SettingsPage() {
   const [darkMode, setDarkMode] = useState<boolean>(false);
-  const [emailNotif, setEmailNotif] = useState<boolean>(true);
-  const [smsNotif, setSmsNotif] = useState<boolean>(false);
-  const [language, setLanguage] = useState<string>('en');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const theme = localStorage.getItem('pref_theme');
-    const email = localStorage.getItem('pref_email_notif');
-    const sms = localStorage.getItem('pref_sms_notif');
-    const lang = localStorage.getItem('pref_lang');
     setDarkMode(theme === 'dark');
-    setEmailNotif(email !== 'false');
-    setSmsNotif(sms === 'true');
-    setLanguage(lang || 'en');
   }, []);
 
   useEffect(() => {
@@ -31,17 +27,6 @@ export default function SettingsPage() {
     else root.classList.remove('dark');
   }, [darkMode]);
 
-  useEffect(() => {
-    localStorage.setItem('pref_email_notif', String(emailNotif));
-  }, [emailNotif]);
-
-  useEffect(() => {
-    localStorage.setItem('pref_sms_notif', String(smsNotif));
-  }, [smsNotif]);
-
-  useEffect(() => {
-    localStorage.setItem('pref_lang', language);
-  }, [language]);
 
   return (
     <Layout>
@@ -78,27 +63,75 @@ export default function SettingsPage() {
               <Label htmlFor="darkMode">Dark Mode</Label>
               <Switch id="darkMode" checked={darkMode} onCheckedChange={setDarkMode} />
             </div>
-            <div className="flex items-center justify-between">
-              <Label htmlFor="emailNotif">Email Notifications</Label>
-              <Switch id="emailNotif" checked={emailNotif} onCheckedChange={setEmailNotif} />
-            </div>
-            <div className="flex items-center justify-between">
-              <Label htmlFor="smsNotif">SMS Notifications</Label>
-              <Switch id="smsNotif" checked={smsNotif} onCheckedChange={setSmsNotif} />
-            </div>
-            <div>
-              <Label className="mb-2 block">Language</Label>
-              <Select value={language} onValueChange={setLanguage}>
-                <SelectTrigger className="w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en">English</SelectItem>
-                  <SelectItem value="fr">French</SelectItem>
-                  <SelectItem value="ar">Arabic</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Lock className="h-5 w-5" />
+              Password Management
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {message && (<div className="mb-3 text-green-700 bg-green-50 border border-green-200 rounded p-2">{message}</div>)}
+            {error && (<div className="mb-3 text-red-700 bg-red-50 border border-red-200 rounded p-2">{error}</div>)}
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setMessage(null);
+                setError(null);
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                  setError('Please fill all fields');
+                  return;
+                }
+                if (newPassword !== confirmPassword) {
+                  setError('New passwords do not match');
+                  return;
+                }
+                if (newPassword.length < 6) {
+                  setError('Password must be at least 6 characters');
+                  return;
+                }
+                setSaving(true);
+                try {
+                  const res = await fetch('/api/users/password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: 'self', currentPassword, newPassword, confirmPassword }),
+                  });
+                  const data = await res.json();
+                  if (!res.ok) throw new Error(data?.error || 'Failed');
+                  setMessage(data?.message || 'Password updated successfully');
+                  setCurrentPassword('');
+                  setNewPassword('');
+                  setConfirmPassword('');
+                } catch (e: any) {
+                  setError(e.message || 'Error');
+                } finally {
+                  setSaving(false);
+                }
+              }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              <div>
+                <Label htmlFor="currentPassword">Current Password</Label>
+                <input id="currentPassword" type="password" className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required />
+              </div>
+              <div>
+                <Label htmlFor="newPassword">New Password</Label>
+                <input id="newPassword" type="password" className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+              </div>
+              <div className="md:col-span-2">
+                <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                <input id="confirmPassword" type="password" className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+              </div>
+              <div className="md:col-span-2">
+                <button type="submit" disabled={saving} className="w-full h-10 rounded-md bg-brand text-white hover:bg-brand-600 disabled:opacity-50">
+                  {saving ? 'Updating...' : 'Update Password'}
+                </button>
+              </div>
+            </form>
           </CardContent>
         </Card>
       </div>
