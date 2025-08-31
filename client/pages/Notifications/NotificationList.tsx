@@ -149,10 +149,6 @@ export default function NotificationList() {
               <Label>Notification Type</Label>
               <Input className="mt-2" value={filters.notificationType} onChange={(e) => setFilters((f) => ({ ...f, notificationType: e.target.value }))} placeholder="Notification Type" />
             </div>
-            <div className="inline-flex flex-col min-w-[240px] shrink-0">
-              <Label>Search</Label>
-              <Input className="mt-2" value={filters.search} onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))} placeholder="NCC ID or content" />
-            </div>
           </CardContent>
         </Card>
 
