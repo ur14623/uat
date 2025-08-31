@@ -113,6 +113,7 @@ export function createServer() {
   app.get("/api/users/:id", getUser);
   app.put("/api/users/:id", updateUser);
   app.delete("/api/users/:id", deleteUser);
+  app.post("/api/users/password", changePassword);
 
   return app;
 }
