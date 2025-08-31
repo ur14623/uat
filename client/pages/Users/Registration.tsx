@@ -15,6 +15,8 @@ export default function Registration() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [department, setDepartment] = useState('');
   const [role, setRole] = useState<'Admin'|'QA'|'Business'|'User'>('User');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +27,7 @@ export default function Registration() {
     setMessage(null);
     setError(null);
 
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !phoneNumber || !department) {
       setError('Please fill all required fields.');
       return;
     }
@@ -35,7 +37,7 @@ export default function Registration() {
       const res = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email, password, role }),
+        body: JSON.stringify({ firstName, lastName, email, password, role, phoneNumber, department }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Registration failed');
@@ -96,8 +98,16 @@ export default function Registration() {
                 <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div>
+                <Label htmlFor="phoneNumber">Phone Number</Label>
+                <Input id="phoneNumber" type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
+              </div>
+              <div>
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              </div>
+              <div>
+                <Label htmlFor="department">Department</Label>
+                <Input id="department" value={department} onChange={(e) => setDepartment(e.target.value)} required />
               </div>
               <div className="md:col-span-2">
                 <Label htmlFor="role">Role</Label>
