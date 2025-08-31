@@ -234,7 +234,7 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   const toggleExpanded = (title: string) => {
-    setExpandedItems((prev) => (prev.includes(title) ? [] : [title]));
+    setExpandedItems((prev) => (prev.includes(title) ? prev : [title]));
   };
 
   const isItemActive = (item: NavigationItem): boolean => {
