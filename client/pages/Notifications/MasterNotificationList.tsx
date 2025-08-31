@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
@@ -29,13 +28,11 @@ const VALIDITY = ['DAILY','WEEKLY','MONTHLY','UNLIMITED','MEGA'] as const;
 
 export default function MasterNotificationList() {
   const [filters, setFilters] = useState({
-    bu: [] as string[],
+    bu: '',
     resourceType: '',
     validity: '',
     bundleType: '',
     notificationType: '',
-    dynamicPrice: '',
-    search: '',
   });
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -45,13 +42,11 @@ export default function MasterNotificationList() {
 
   const query = useMemo(() => {
     const q = new URLSearchParams();
-    if (filters.bu.length) q.set('bu', filters.bu.join(','));
+    if (filters.bu) q.set('bu', filters.bu);
     if (filters.resourceType) q.set('resourceType', filters.resourceType);
     if (filters.validity) q.set('validity', filters.validity);
     if (filters.bundleType) q.set('bundleType', filters.bundleType);
     if (filters.notificationType) q.set('notificationType', filters.notificationType);
-    if (filters.dynamicPrice) q.set('dynamicPrice', filters.dynamicPrice);
-    if (filters.search) q.set('search', filters.search);
     q.set('page', String(page));
     q.set('pageSize', String(pageSize));
     return q.toString();
@@ -117,26 +112,19 @@ export default function MasterNotificationList() {
           <CardHeader>
             <CardTitle>Filters</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
+          <CardContent className="flex items-end gap-4 overflow-x-auto whitespace-nowrap">
+            <div className="inline-flex flex-col min-w-[180px] shrink-0">
+              <div className="inline-flex flex-col min-w-[180px] shrink-0">
                 <Label>Business Unit</Label>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {BU_OPTIONS.map((b) => (
-                    <label key={b} className="flex items-center gap-2 text-sm">
-                      <Checkbox
-                        checked={filters.bu.includes(b)}
-                        onCheckedChange={(v) => setFilters((f) => ({
-                          ...f,
-                          bu: v ? [...f.bu, b] : f.bu.filter((x) => x !== b)
-                        }))}
-                      />
-                      {b}
-                    </label>
-                  ))}
-                </div>
+                <Select value={filters.bu || "__all__"} onValueChange={(v) => setFilters((f) => ({ ...f, bu: v === "__all__" ? "" : v }))}>
+                  <SelectTrigger className="mt-2"><SelectValue placeholder="All" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">All</SelectItem>
+                    {BU_OPTIONS.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+                  </SelectContent>
+                </Select>
               </div>
-              <div>
+              <div className="inline-flex flex-col min-w-[180px] shrink-0">
                 <Label>Resource Type</Label>
                 <Select value={filters.resourceType || "__all__"} onValueChange={(v) => setFilters((f) => ({ ...f, resourceType: v === "__all__" ? "" : v }))}>
                   <SelectTrigger className="mt-2"><SelectValue placeholder="All" /></SelectTrigger>
@@ -146,7 +134,7 @@ export default function MasterNotificationList() {
                   </SelectContent>
                 </Select>
               </div>
-              <div>
+              <div className="inline-flex flex-col min-w-[180px] shrink-0">
                 <Label>Validity</Label>
                 <Select value={filters.validity || "__all__"} onValueChange={(v) => setFilters((f) => ({ ...f, validity: v === "__all__" ? "" : v }))}>
                   <SelectTrigger className="mt-2"><SelectValue placeholder="All" /></SelectTrigger>
@@ -156,28 +144,13 @@ export default function MasterNotificationList() {
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label>Dynamic Price</Label>
-                <Select value={filters.dynamicPrice || "__all__"} onValueChange={(v) => setFilters((f) => ({ ...f, dynamicPrice: v === "__all__" ? "" : v }))}>
-                  <SelectTrigger className="mt-2"><SelectValue placeholder="All" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="__all__">All</SelectItem>
-                    <SelectItem value="true">True</SelectItem>
-                    <SelectItem value="false">False</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
+              <div className="inline-flex flex-col min-w-[200px] shrink-0">
                 <Label>Bundle Type</Label>
                 <Input className="mt-2" value={filters.bundleType} onChange={(e) => setFilters((f) => ({ ...f, bundleType: e.target.value }))} placeholder="Bundle Type" />
               </div>
-              <div>
+              <div className="inline-flex flex-col min-w-[200px] shrink-0">
                 <Label>Notification Type</Label>
                 <Input className="mt-2" value={filters.notificationType} onChange={(e) => setFilters((f) => ({ ...f, notificationType: e.target.value }))} placeholder="Notification Type" />
-              </div>
-              <div>
-                <Label>Search</Label>
-                <Input className="mt-2" value={filters.search} onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))} placeholder="Name..." />
               </div>
             </div>
           </CardContent>
