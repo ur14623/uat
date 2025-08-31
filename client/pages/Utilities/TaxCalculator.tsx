@@ -74,7 +74,7 @@ export default function TaxCalculator() {
           <Card>
             <CardHeader><CardTitle className="text-base">Effective Amount</CardTitle></CardHeader>
             <CardContent className="text-2xl font-bold">{result ? (() => {
-              const n = result.effective;
+              const n = result.effective * 100;
               const pow = 100000;
               const sign = n < 0 ? -1 : 1;
               const absScaled = Math.floor(Math.abs(n) * pow);
