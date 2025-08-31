@@ -9,9 +9,10 @@ interface Props {
   includeCategory?: boolean;
   showAddButton?: boolean;
   onAdd?: () => void;
+  showActions?: boolean;
 }
 
-export default function GenericProductsTable({ title, items, includeCategory = true, showAddButton = false, onAdd }: Props) {
+export default function GenericProductsTable({ title, items, includeCategory = true, showAddButton = false, onAdd, showActions = true }: Props) {
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
@@ -30,7 +31,7 @@ export default function GenericProductsTable({ title, items, includeCategory = t
                 <TableHead>Description</TableHead>
                 <TableHead>Price / Bundle Info</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                {showActions && <TableHead>Actions</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -43,17 +44,19 @@ export default function GenericProductsTable({ title, items, includeCategory = t
                   <TableCell>
                     <span className={it.status === 'Active' ? 'text-green-600' : it.status === 'Draft' ? 'text-yellow-700' : 'text-gray-600'}>{it.status}</span>
                   </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button size="sm" variant="outline">Edit</Button>
-                      <Button size="sm" variant="destructive">Delete</Button>
-                    </div>
-                  </TableCell>
+                  {showActions && (
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Button size="sm" variant="outline">Edit</Button>
+                        <Button size="sm" variant="destructive">Delete</Button>
+                      </div>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
               {items.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={includeCategory ? 6 : 5} className="text-center text-sm text-muted-foreground py-6">No products found.</TableCell>
+                  <TableCell colSpan={(includeCategory ? 5 : 4) + (showActions ? 1 : 0)} className="text-center text-sm text-muted-foreground py-6">No products found.</TableCell>
                 </TableRow>
               )}
             </TableBody>
