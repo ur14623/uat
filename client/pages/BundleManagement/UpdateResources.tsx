@@ -490,12 +490,14 @@ export default function UpdateBundle() {
         {/* Alert Component */}
         <AlertComponent successMessage={successMessage} />
 
-        {/* Bundles Table */}
-        <BundlesTable 
-          bundlesDetails={bundlesDetails}
-          onUpdateBundle={handleUpdateBundle}
-          loading={loading}
-        />
+        {/* Bundles Table - only show when results exist */}
+        {bundlesDetails.length > 0 && (
+          <BundlesTable
+            bundlesDetails={bundlesDetails}
+            onUpdateBundle={handleUpdateBundle}
+            loading={loading}
+          />
+        )}
 
         {/* Update Modal */}
         <UpdateModal 
@@ -507,63 +509,7 @@ export default function UpdateBundle() {
           loading={loading}
         />
 
-        {/* Information Section */}
-        {bundlesDetails.length === 0 && !loading && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">How to Update</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm text-muted-foreground space-y-2">
-                  <p>1. Enter customer MSISDN</p>
-                  <p>2. Click "Fetch Bundles" to search</p>
-                  <p>3. Review available bundles</p>
-                  <p>4. Click "Update" on desired bundle</p>
-                  <p>5. Enter new value in modal</p>
-                  <p>6. Confirm update</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Update Rules</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm text-muted-foreground space-y-1">
-                  <p>• Only ACTIVE bundles can be updated</p>
-                  <p>• New value must be numeric</p>
-                  <p>• Value cannot be negative</p>
-                  <p>• Changes are immediate</p>
-                  <p>• Customer receives SMS notification</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Bundle Types</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Badge className="bg-blue-100 text-blue-800">Data</Badge>
-                    <span className="text-muted-foreground">MB/GB values</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge className="bg-green-100 text-green-800">Voice</Badge>
-                    <span className="text-muted-foreground">Minute values</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge className="bg-purple-100 text-purple-800">SMS</Badge>
-                    <span className="text-muted-foreground">Message count</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+        {/* Information Section removed as requested */}
       </div>
     </Layout>
   );
