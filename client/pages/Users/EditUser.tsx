@@ -91,18 +91,18 @@ export default function EditUser() {
               <CardTitle>User #{form.id}</CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={save} className="grid grid-cols-1 gap-4">
+              <form onSubmit={save} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" value={form.firstName} onChange={(e) => setForm({ ...(form as any), firstName: e.target.value })} />
+                  <Input id="firstName" value={form.firstName} onChange={(e) => setForm({ ...(form as any), firstName: e.target.value })} required />
                 </div>
                 <div>
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" value={form.lastName} onChange={(e) => setForm({ ...(form as any), lastName: e.target.value })} />
+                  <Input id="lastName" value={form.lastName} onChange={(e) => setForm({ ...(form as any), lastName: e.target.value })} required />
                 </div>
                 <div>
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...(form as any), email: e.target.value })} />
+                  <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...(form as any), email: e.target.value })} required />
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
@@ -111,7 +111,7 @@ export default function EditUser() {
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div>
+                <div className="md:col-span-2">
                   <Label htmlFor="role">Role</Label>
                   <select id="role" value={form.role} onChange={(e) => setForm({ ...(form as any), role: e.target.value as any })} className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
                     <option value="Admin">Admin</option>
