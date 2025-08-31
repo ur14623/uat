@@ -82,7 +82,7 @@ export default function Registration() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={submit} className="grid grid-cols-1 gap-4">
+            <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="firstName">First Name</Label>
                 <Input id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
@@ -99,7 +99,7 @@ export default function Registration() {
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
-              <div>
+              <div className="md:col-span-2">
                 <Label htmlFor="role">Role</Label>
                 <select id="role" value={role} onChange={(e) => setRole(e.target.value as any)} className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
                   <option value="Admin">Admin</option>
