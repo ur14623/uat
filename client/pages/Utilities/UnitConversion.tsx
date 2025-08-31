@@ -99,9 +99,9 @@ export default function UnitConversion() {
           </p>
         </div>
 
-        <div className="flex justify-center">
-          <div className="w-full max-w-4xl">
-            <Card className="shadow-lg">
+        <div>
+          <div className="w-full">
+            <Card>
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl">Unit Converters</CardTitle>
               </CardHeader>
