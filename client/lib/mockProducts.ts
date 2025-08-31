@@ -20,7 +20,7 @@ export function generateMockProducts(countPerCategory = 12): ProductItem[] {
         id: `p-${idSeq++}`,
         name: `${cat}-PROD-${String(i + 1).padStart(3, '0')}`,
         category: cat,
-        description: `Includes ${days} day${days > 1 ? 's' : ''} of service`;
+        description: `Includes ${days} day${days > 1 ? 's' : ''} of service`,
         priceInfo: `KES ${price}`,
         status: (i % 5 === 0) ? 'Draft' : 'Active',
       });
