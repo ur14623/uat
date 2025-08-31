@@ -110,8 +110,8 @@ export default function NotificationList() {
           <CardHeader>
             <CardTitle>Filters</CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 gap-4">
-            <div>
+          <CardContent className="flex items-end gap-4 overflow-x-auto whitespace-nowrap">
+            <div className="inline-flex flex-col min-w-[180px] shrink-0">
               <Label>Business Unit</Label>
               <Select value={filters.businessUnit || "__all__"} onValueChange={(v) => setFilters((f) => ({ ...f, businessUnit: v === "__all__" ? "" : v }))}>
                 <SelectTrigger className="mt-2"><SelectValue placeholder="All" /></SelectTrigger>
@@ -121,7 +121,7 @@ export default function NotificationList() {
                 </SelectContent>
               </Select>
             </div>
-            <div>
+            <div className="inline-flex flex-col min-w-[180px] shrink-0">
               <Label>Resource Type</Label>
               <Select value={filters.resourceType || "__all__"} onValueChange={(v) => setFilters((f) => ({ ...f, resourceType: v === "__all__" ? "" : v }))}>
                 <SelectTrigger className="mt-2"><SelectValue placeholder="All" /></SelectTrigger>
@@ -131,7 +131,7 @@ export default function NotificationList() {
                 </SelectContent>
               </Select>
             </div>
-            <div>
+            <div className="inline-flex flex-col min-w-[180px] shrink-0">
               <Label>Validity</Label>
               <Select value={filters.validity || "__all__"} onValueChange={(v) => setFilters((f) => ({ ...f, validity: v === "__all__" ? "" : v }))}>
                 <SelectTrigger className="mt-2"><SelectValue placeholder="All" /></SelectTrigger>
@@ -141,15 +141,15 @@ export default function NotificationList() {
                 </SelectContent>
               </Select>
             </div>
-            <div>
+            <div className="inline-flex flex-col min-w-[200px] shrink-0">
               <Label>Bundle Type</Label>
               <Input className="mt-2" value={filters.bundleType} onChange={(e) => setFilters((f) => ({ ...f, bundleType: e.target.value }))} placeholder="Bundle Type" />
             </div>
-            <div>
+            <div className="inline-flex flex-col min-w-[200px] shrink-0">
               <Label>Notification Type</Label>
               <Input className="mt-2" value={filters.notificationType} onChange={(e) => setFilters((f) => ({ ...f, notificationType: e.target.value }))} placeholder="Notification Type" />
             </div>
-            <div>
+            <div className="inline-flex flex-col min-w-[240px] shrink-0">
               <Label>Search</Label>
               <Input className="mt-2" value={filters.search} onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))} placeholder="NCC ID or content" />
             </div>
