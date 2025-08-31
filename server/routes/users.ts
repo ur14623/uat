@@ -11,13 +11,14 @@ export interface UserRow {
   phoneNumber?: string;
   department?: string;
   lineManager?: string;
+  profilePicture?: string;
 }
 
 let uid = 10;
 const users: UserRow[] = [
-  { id: '1', firstName: 'System', lastName: 'Administrator', email: 'admin@safaricom.co.ke', role: 'Admin', status: 'Active', lastLogin: new Date().toISOString(), phoneNumber: '+254700000001', department: 'IT', lineManager: 'CTO' },
-  { id: '2', firstName: 'Biz', lastName: 'User', email: 'business@safaricom.co.ke', role: 'Business', status: 'Active', lastLogin: new Date().toISOString(), phoneNumber: '+254700000002', department: 'Sales', lineManager: 'Sales Lead' },
-  { id: '3', firstName: 'Regular', lastName: 'User', email: 'user@safaricom.co.ke', role: 'User', status: 'Inactive', lastLogin: new Date().toISOString(), phoneNumber: '+254700000003', department: 'Support', lineManager: 'Support Manager' },
+  { id: '1', firstName: 'System', lastName: 'Administrator', email: 'admin@safaricom.co.ke', role: 'Admin', status: 'Active', lastLogin: new Date().toISOString(), phoneNumber: '+254700000001', department: 'IT', lineManager: 'CTO', profilePicture: '/placeholder.svg' },
+  { id: '2', firstName: 'Biz', lastName: 'User', email: 'business@safaricom.co.ke', role: 'Business', status: 'Active', lastLogin: new Date().toISOString(), phoneNumber: '+254700000002', department: 'Sales', lineManager: 'Sales Lead', profilePicture: '/placeholder.svg' },
+  { id: '3', firstName: 'Regular', lastName: 'User', email: 'user@safaricom.co.ke', role: 'User', status: 'Inactive', lastLogin: new Date().toISOString(), phoneNumber: '+254700000003', department: 'Support', lineManager: 'Support Manager', profilePicture: '/placeholder.svg' },
 ];
 
 export const listUsers: RequestHandler = (_req, res) => {
@@ -25,7 +26,7 @@ export const listUsers: RequestHandler = (_req, res) => {
 };
 
 export const createUser: RequestHandler = (req, res) => {
-  const { firstName, lastName, email, password, role, phoneNumber, department, lineManager } = req.body || {};
+  const { firstName, lastName, email, password, role, phoneNumber, department, lineManager, profilePicture } = req.body || {};
   if (!firstName || !lastName || !email || !password || !role || !phoneNumber || !department || !lineManager) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
@@ -43,6 +44,7 @@ export const createUser: RequestHandler = (req, res) => {
     phoneNumber,
     department,
     lineManager,
+    profilePicture,
   };
   users.unshift(user);
   res.status(201).json(user);
