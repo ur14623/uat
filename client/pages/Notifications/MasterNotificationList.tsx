@@ -112,8 +112,7 @@ export default function MasterNotificationList() {
           <CardHeader>
             <CardTitle>Filters</CardTitle>
           </CardHeader>
-          <CardContent className="flex items-end gap-4 overflow-x-auto whitespace-nowrap">
-            <div className="inline-flex flex-col min-w-[180px] shrink-0">
+          <CardContent className="flex items-start gap-4 overflow-x-auto whitespace-nowrap">
               <div className="inline-flex flex-col min-w-[180px] shrink-0">
                 <Label>Business Unit</Label>
                 <Select value={filters.bu || "__all__"} onValueChange={(v) => setFilters((f) => ({ ...f, bu: v === "__all__" ? "" : v }))}>
@@ -152,7 +151,6 @@ export default function MasterNotificationList() {
                 <Label>Notification Type</Label>
                 <Input className="mt-2" value={filters.notificationType} onChange={(e) => setFilters((f) => ({ ...f, notificationType: e.target.value }))} placeholder="Notification Type" />
               </div>
-            </div>
           </CardContent>
         </Card>
 
