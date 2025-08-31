@@ -112,10 +112,6 @@ export default function Registration() {
                 <Input id="department" value={department} onChange={(e) => setDepartment(e.target.value)} required />
               </div>
               <div>
-                <Label htmlFor="department">Department</Label>
-                <Input id="department" value={department} onChange={(e) => setDepartment(e.target.value)} required />
-              </div>
-              <div>
                 <Label htmlFor="lineManager">Line Manager</Label>
                 <Input id="lineManager" value={lineManager} onChange={(e) => setLineManager(e.target.value)} required />
               </div>
@@ -129,8 +125,23 @@ export default function Registration() {
                 </select>
               </div>
               <div className="md:col-span-2">
-                <Label htmlFor="profilePicture">Profile Picture URL (optional)</Label>
-                <Input id="profilePicture" type="url" value={profilePicture} onChange={(e) => setProfilePicture(e.target.value)} placeholder="https://..." />
+                <Label htmlFor="profilePicture">Profile Picture (optional)</Label>
+                <input
+                  id="profilePicture"
+                  type="file"
+                  accept="image/*"
+                  className="mt-2 w-full"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = () => setProfilePicture(String(reader.result));
+                    reader.readAsDataURL(file);
+                  }}
+                />
+                {profilePicture && (
+                  <img src={profilePicture} alt="Preview" className="mt-2 h-20 w-20 rounded-full object-cover border" />
+                )}
               </div>
               <div className="md:col-span-2">
                 <Button type="submit" className="w-full bg-brand hover:bg-brand-600" disabled={loading}>{loading ? 'Creating...' : 'Create'}</Button>
