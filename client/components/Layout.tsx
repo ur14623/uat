@@ -174,11 +174,6 @@ const sidebarNavItems: NavigationItem[] = [
         href: "/rate_mapping_table",
       },
       {
-        title: "Create New Roaming Rate",
-        icon: Upload,
-        href: "/roaming_rate_upload",
-      },
-      {
         title: "Create New International Rate",
         icon: Upload,
         href: "/international_rate_upload",
