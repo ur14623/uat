@@ -13,6 +13,7 @@ import ProtectedRoute from "@/components/Auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import BundlePage from "./pages/BundlePage";
+import CategoryBundles from "./pages/CategoryBundles";
 import VoucherRecharge from "./pages/VoucherRecharge";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
@@ -89,6 +90,15 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <BundlePage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/bundles/:category"
+              element={
+                <ProtectedRoute>
+                  <CategoryBundles />
                 </ProtectedRoute>
               }
             />

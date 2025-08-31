@@ -14,7 +14,7 @@ import {
   Gift,
   Home
 } from 'lucide-react';
-import DashboardProductsTable, { DashboardProductRow } from '@/components/DashboardProductsTable';
+import GenericProductsTable from '@/components/GenericProductsTable';
 
 interface ProductCategory {
   name: string;
@@ -25,6 +25,8 @@ interface ProductCategory {
   description: string;
   color: string;
 }
+
+import { generateMockProducts } from '@/lib/mockProducts';
 
 interface ChartData {
   category: string;
@@ -38,7 +40,7 @@ const mockProductCategories: ProductCategory[] = [
     name: 'CBU',
     count: 25,
     tags: ['DATA', 'VOICE'],
-    link: '/bundle_page/CBU',
+    link: '/bundles/CBU',
     icon: <Smartphone className="h-5 w-5 text-blue-600" />,
     description: 'Core Banking Unit products',
     color: '#3B82F6'
@@ -47,7 +49,7 @@ const mockProductCategories: ProductCategory[] = [
     name: 'EBU',
     count: 18,
     tags: ['DATA', 'SMS'],
-    link: '/bundle_page/EBU',
+    link: '/bundles/EBU',
     icon: <Wallet className="h-5 w-5 text-green-600" />,
     description: 'Electronic Banking Unit',
     color: '#10B981'
@@ -56,7 +58,7 @@ const mockProductCategories: ProductCategory[] = [
     name: 'M-PESA',
     count: 32,
     tags: ['VOICE', 'SMS'],
-    link: '/bundle_page/M-PESA',
+    link: '/bundles/M-PESA',
     icon: <CreditCard className="h-5 w-5 text-orange-600" />,
     description: 'Mobile Money Services',
     color: '#F59E0B'
@@ -65,7 +67,7 @@ const mockProductCategories: ProductCategory[] = [
     name: 'CVM',
     count: 14,
     tags: ['DATA'],
-    link: '/bundle_page/CVM',
+    link: '/bundles/CVM',
     icon: <Users className="h-5 w-5 text-purple-600" />,
     description: 'Customer Value Management',
     color: '#8B5CF6'
@@ -74,7 +76,7 @@ const mockProductCategories: ProductCategory[] = [
     name: 'Loan',
     count: 22,
     tags: ['VOICE'],
-    link: '/bundle_page/Loan',
+    link: '/bundles/Loan',
     icon: <Banknote className="h-5 w-5 text-red-600" />,
     description: 'Loan Products',
     color: '#EF4444'
@@ -83,7 +85,7 @@ const mockProductCategories: ProductCategory[] = [
     name: 'ROAMING',
     count: 8,
     tags: ['DATA', 'VOICE', 'SMS'],
-    link: '/bundle_page/ROAMING',
+    link: '/bundles/ROAMING',
     icon: <Globe className="h-5 w-5 text-cyan-600" />,
     description: 'International Roaming',
     color: '#06B6D4'
@@ -92,7 +94,7 @@ const mockProductCategories: ProductCategory[] = [
     name: 'S&D',
     count: 16,
     tags: ['DATA', 'SMS'],
-    link: '/bundle_page/S&D',
+    link: '/bundles/S&D',
     icon: <ShoppingCart className="h-5 w-5 text-pink-600" />,
     description: 'Sales & Distribution',
     color: '#EC4899'
@@ -101,7 +103,7 @@ const mockProductCategories: ProductCategory[] = [
     name: 'J4U',
     count: 11,
     tags: ['VOICE', 'SMS'],
-    link: '/bundle_page/J4U',
+    link: '/bundles/J4U',
     icon: <Gift className="h-5 w-5 text-indigo-600" />,
     description: 'Just For You offers',
     color: '#6366F1'
@@ -111,7 +113,8 @@ const mockProductCategories: ProductCategory[] = [
 const resourceTypes = ['DATA', 'VOICE', 'SMS', 'COMBO'] as const;
 const productTypes = ['Bundle', 'Package', 'Addon'] as const;
 
-function generateProducts(categories: ProductCategory[], totalPerCategory = 12): DashboardProductRow[] {
+/* replaced by generateMockProducts */
+function generateProducts(categories: ProductCategory[], totalPerCategory = 12): any[] {
   const rows: DashboardProductRow[] = [];
   let idSeq = 1;
   for (const cat of categories) {
@@ -132,15 +135,16 @@ function generateProducts(categories: ProductCategory[], totalPerCategory = 12):
   return rows;
 }
 
+import { useNavigate } from 'react-router-dom';
 export default function Dashboard() {
   const [productCounts, setProductCounts] = useState<ProductCategory[]>([]);
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const nav = useNavigate();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [allProducts, setAllProducts] = useState<DashboardProductRow[]>([]);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -154,7 +158,7 @@ export default function Dashboard() {
           color: category.color,
         }));
         setChartData(cData);
-        setAllProducts(generateProducts(mockProductCategories, 12));
+        setAllProducts(generateMockProducts(12));
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {
@@ -166,24 +170,17 @@ export default function Dashboard() {
 
   const totalProducts = productCounts.reduce((sum, category) => sum + category.count, 0);
 
-  const filtered = useMemo(() => {
-    return selectedCategory
-      ? allProducts.filter(p => p.productCategory === selectedCategory)
-      : allProducts;
-  }, [allProducts, selectedCategory]);
-
-  const total = filtered.length;
+  const total = allProducts.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const currentPage = Math.min(page, totalPages);
   const start = (currentPage - 1) * pageSize;
   const end = start + pageSize;
-  const rows = filtered.slice(start, end);
+  const rows = allProducts.slice(start, end);
 
-  const tableTitle = selectedCategory ? `Selected Category: ${selectedCategory}` : 'All Products';
+  const tableTitle = 'All Products';
 
   const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category);
-    setPage(1);
+    nav(`/bundles/${encodeURIComponent(category)}`);
   };
 
   return (
@@ -248,16 +245,8 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Dynamic Products Table */}
-        <DashboardProductsTable
-          title={tableTitle}
-          rows={rows}
-          total={total}
-          page={currentPage}
-          pageSize={pageSize}
-          onPageChange={setPage}
-          onPageSizeChange={(size) => { setPageSize(size); setPage(1); }}
-        />
+        {/* All Products Table */}
+        <GenericProductsTable title={tableTitle} items={rows} includeCategory />
       </div>
     </Layout>
   );
