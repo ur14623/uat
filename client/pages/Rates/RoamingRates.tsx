@@ -1,11 +1,11 @@
 import Layout from '@/components/Layout';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Home, Download, FileArchive, List } from 'lucide-react';
+import { Home } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface RateRow {
   country: string;
@@ -20,21 +20,32 @@ interface RateRow {
 
 export default function RoamingRates() {
   const [items, setItems] = useState<RateRow[]>([]);
-  const [excelFileName, setExcelFileName] = useState<string | null>(null);
-  const [zipFileName, setZipFileName] = useState<string | null>(null);
+  const [versions, setVersions] = useState<{ id: string; createdAt: string }[]>([]);
+  const [selectedVersion, setSelectedVersion] = useState<string>("");
 
   useEffect(() => {
-    const load = async () => {
-      const res = await fetch('/api/rates/roaming');
+    const loadVersions = async () => {
+      const res = await fetch('/api/rates/roaming/versions');
+      const data = await res.json();
+      if (res.ok && Array.isArray(data.versions)) {
+        setVersions(data.versions);
+        if (data.versions[0]?.id) setSelectedVersion((prev) => prev || data.versions[0].id);
+      }
+    };
+    loadVersions();
+  }, []);
+
+  useEffect(() => {
+    const loadRates = async () => {
+      if (!selectedVersion) return;
+      const res = await fetch(`/api/rates/roaming?version=${encodeURIComponent(selectedVersion)}`);
       const data = await res.json();
       if (res.ok) {
         setItems(data.items || []);
-        setExcelFileName(data.excelFileName || null);
-        setZipFileName(data.zipFileName || null);
       }
     };
-    load();
-  }, []);
+    loadRates();
+  }, [selectedVersion]);
 
   return (
     <Layout>
@@ -57,12 +68,22 @@ export default function RoamingRates() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">Roaming Rates</h1>
-            <p className="text-muted-foreground">Current roaming rates for countries and services</p>
+            <p className="text-muted-foreground">Select a version to view its roaming rates</p>
           </div>
-          <div className="flex gap-2">
-            <a href="/api/rates/roaming/download-excel"><Button variant="outline"><Download className="h-4 w-4 mr-2" /> Download Excel</Button></a>
-            {zipFileName && (<a href="/api/rates/roaming/download-zip"><Button variant="outline"><FileArchive className="h-4 w-4 mr-2" /> Download Rate ID</Button></a>)}
-            <Link to="/rate_mapping_table"><Button className="bg-brand hover:bg-brand-600"><List className="h-4 w-4 mr-2" /> Create Mapping Table</Button></Link>
+          <div className="w-64">
+            <Label className="text-sm mb-1 block">Version</Label>
+            <Select value={selectedVersion} onValueChange={setSelectedVersion}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select version" />
+              </SelectTrigger>
+              <SelectContent>
+                {versions.map((v) => (
+                  <SelectItem key={v.id} value={v.id}>
+                    {v.id} — {new Date(v.createdAt).toLocaleString()}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 

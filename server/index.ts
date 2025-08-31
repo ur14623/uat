@@ -89,6 +89,7 @@ export function createServer() {
   // Rates APIs (mock)
   app.post("/api/rates/roaming/upload", uploadRoamingRates);
   app.get("/api/rates/roaming", getRoamingRates);
+  app.get("/api/rates/roaming/versions", (_req, res) => import("./routes/rates").then(m => m.getRoamingVersions(_req, res)));
   app.get("/api/rates/roaming/download-excel", downloadRoamingExcel);
   app.get("/api/rates/roaming/download-zip", downloadRateIdsZip);
   app.get("/api/rates/mapping", getMappingTable);
