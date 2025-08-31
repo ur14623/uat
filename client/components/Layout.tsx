@@ -50,6 +50,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
