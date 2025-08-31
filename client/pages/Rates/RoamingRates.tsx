@@ -81,9 +81,8 @@ export default function RoamingRates() {
             <h1 className="text-3xl font-bold text-foreground mb-2">Roaming Rates</h1>
             <p className="text-muted-foreground">Select a version to view its roaming rates</p>
           </div>
-          <div className="flex items-end gap-3">
-            <div className="w-64">
-              <Label className="text-sm mb-1 block">Version</Label>
+          <div className="flex items-center gap-3">
+            <div className="w-72">
               <Select value={selectedVersion} onValueChange={setSelectedVersion}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select version" />
@@ -105,7 +104,7 @@ export default function RoamingRates() {
 
         <Card>
           <CardContent>
-            <div className="flex items-end justify-between mb-3 gap-3">
+            <div className="flex items-center justify-between mb-3 gap-3">
               <div className="w-72">
                 <Input
                   id="search"
