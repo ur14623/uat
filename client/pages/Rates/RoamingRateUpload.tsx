@@ -6,12 +6,14 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Label } from '@/components/ui/label';
 import { Home, Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function RoamingRateUpload() {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const nav = useNavigate();
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +35,7 @@ export default function RoamingRateUpload() {
       if (!res.ok) throw new Error(data?.error || 'Upload failed');
       setMessage(data?.message || 'Upload processed successfully.');
       if (fileRef.current) fileRef.current.value = '';
+      setTimeout(() => nav('/rate_mapping_table'), 500);
     } catch (e: any) {
       setError(e.message || 'Error');
     } finally {
