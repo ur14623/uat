@@ -101,17 +101,19 @@ export default function NotificationList() {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-1">Notification List</h1>
-          <p className="text-muted-foreground">Filter, view, and manage notifications</p>
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-1">Notification List</h1>
+            <p className="text-muted-foreground">Filter, view, and manage notifications</p>
+          </div>
+          <Link to="/master_notification_add">
+            <Button className="bg-brand hover:bg-brand-600" type="button"><PlusCircle className="h-4 w-4 mr-2" /> Create Notification</Button>
+          </Link>
         </div>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader>
             <CardTitle>Filters</CardTitle>
-            <Link to="/master_notification_add">
-              <Button className="bg-brand hover:bg-brand-600" type="button"><PlusCircle className="h-4 w-4 mr-2" /> Create Notification</Button>
-            </Link>
           </CardHeader>
           <CardContent className="flex items-end gap-4 overflow-x-auto whitespace-nowrap">
             <div className="inline-flex flex-col min-w-[180px] shrink-0">
