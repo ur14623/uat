@@ -17,7 +17,7 @@ const VALIDITY = ['DAILY','WEEKLY','MONTHLY','UNLIMITED','MEGA'] as const;
 
 export default function MasterNotificationAdd() {
   const nav = useNavigate();
-  const [bu, setBu] = useState<string[]>([]);
+  const [bu, setBu] = useState('');
   const [resourceType, setResourceType] = useState('');
   const [validity, setValidity] = useState('');
   const [bundleType, setBundleType] = useState('');
@@ -36,7 +36,7 @@ export default function MasterNotificationAdd() {
   const submit = async () => {
     setError(null);
     setMessage(null);
-    if (bu.length === 0) return setError('Select at least one Business Unit.');
+    if (!bu) return setError('Select a Business Unit.');
     if (!resourceType || !validity || !bundleType || !notificationType || !name) return setError('Fill all required fields.');
 
     setLoading(true);
@@ -45,7 +45,7 @@ export default function MasterNotificationAdd() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          businessUnits: bu,
+          businessUnits: [bu],
           resourceType,
           validity,
           bundleType,
@@ -100,15 +100,13 @@ export default function MasterNotificationAdd() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <Label>Business Units</Label>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {BU_OPTIONS.map((b) => (
-                    <label key={b} className="flex items-center gap-2 text-sm">
-                      <Checkbox checked={bu.includes(b)} onCheckedChange={(v) => setBu((prev) => v ? [...prev, b] : prev.filter((x) => x !== b))} />
-                      {b}
-                    </label>
-                  ))}
-                </div>
+                <Label>Business Unit</Label>
+                <Select value={bu} onValueChange={setBu}>
+                  <SelectTrigger className="mt-2"><SelectValue placeholder="Select" /></SelectTrigger>
+                  <SelectContent>
+                    {BU_OPTIONS.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <Label>Resource Type</Label>
