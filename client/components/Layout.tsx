@@ -142,7 +142,7 @@ const sidebarNavItems: NavigationItem[] = [
     ],
   },
   {
-    title: "Notifications",
+    title: "Notification Management",
     icon: Bell,
     roles: ["business", "admin"],
     items: [
@@ -159,7 +159,7 @@ const sidebarNavItems: NavigationItem[] = [
     ],
   },
   {
-    title: "Rates",
+    title: "Rate Management",
     icon: Globe,
     roles: ["admin"],
     items: [
@@ -186,23 +186,6 @@ const sidebarNavItems: NavigationItem[] = [
     ],
   },
   {
-    title: "Users",
-    icon: User,
-    roles: ["admin"],
-    items: [
-      {
-        title: "All Users",
-        icon: List,
-        href: "/user_management",
-      },
-      {
-        title: "Add User",
-        icon: UserPlus,
-        href: "/registration",
-      },
-    ],
-  },
-  {
     title: "Utilities",
     icon: Cog,
     roles: ["admin"],
@@ -221,6 +204,23 @@ const sidebarNavItems: NavigationItem[] = [
         title: "Bundle Config",
         icon: Settings,
         href: "/bundle_list_new",
+      },
+    ],
+  },
+  {
+    title: "User Management",
+    icon: User,
+    roles: ["admin"],
+    items: [
+      {
+        title: "All Users",
+        icon: List,
+        href: "/user_management",
+      },
+      {
+        title: "Add User",
+        icon: UserPlus,
+        href: "/registration",
       },
     ],
   },
