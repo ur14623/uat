@@ -84,8 +84,8 @@ export default function NotificationDetail() {
         </Breadcrumb>
 
         {item && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-1 space-y-4">
+          <div className="grid grid-cols-1 gap-6">
+            <div className="space-y-4">
               <Card>
                 <CardHeader>
                   <CardTitle>Information</CardTitle>
@@ -106,7 +106,7 @@ export default function NotificationDetail() {
               </Card>
             </div>
 
-            <div className="md:col-span-2 space-y-4">
+            <div className="space-y-4">
               <Card>
                 <CardHeader>
                   <CardTitle>Edit Marketing Descriptions</CardTitle>
