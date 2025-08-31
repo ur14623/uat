@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -358,20 +358,22 @@ export default function Layout({ children }: LayoutProps) {
                 // Single-level navigation item
                 if (!item.items) {
                   return (
-                    <Link
+                    <NavLink
                       key={item.title}
                       to={item.href || "#"}
-                      className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                        isActive
-                          ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                      )}
+                      className={({ isActive }) =>
+                        cn(
+                          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                          isActive
+                            ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                            : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                        )
+                      }
                       onClick={() => setSidebarOpen(false)}
                     >
                       <Icon className="h-5 w-5" />
                       {item.title}
-                    </Link>
+                    </NavLink>
                   );
                 }
 
@@ -407,20 +409,22 @@ export default function Layout({ children }: LayoutProps) {
                         const isSubActive = location.pathname === subItem.href;
 
                         return (
-                          <Link
+                          <NavLink
                             key={subItem.href}
                             to={subItem.href || "#"}
-                            className={cn(
-                              "flex items-center gap-3 rounded-lg px-6 py-2 text-sm transition-colors ml-6",
-                              isSubActive
-                                ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                                : "text-sidebar-foreground bg-sidebar-accent hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground",
-                            )}
+                            className={({ isActive }) =>
+                              cn(
+                                "flex items-center gap-3 rounded-lg px-6 py-2 text-sm transition-colors ml-6",
+                                isActive
+                                  ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                                  : "text-sidebar-foreground bg-sidebar-accent hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground",
+                              )
+                            }
                             onClick={() => setSidebarOpen(false)}
                           >
                             <SubIcon className="h-4 w-4" />
                             {subItem.title}
-                          </Link>
+                          </NavLink>
                         );
                       })}
                     </CollapsibleContent>
