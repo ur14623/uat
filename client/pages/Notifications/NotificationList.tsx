@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
-import { MessageCircle, Home, Eye, Trash2, Download, RefreshCcw } from 'lucide-react';
+import { MessageCircle, Home, Eye, Trash2, Download, RefreshCcw, PlusCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -107,8 +107,11 @@ export default function NotificationList() {
         </div>
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Filters</CardTitle>
+            <Link to="/master_notification_add">
+              <Button className="bg-brand hover:bg-brand-600" type="button"><PlusCircle className="h-4 w-4 mr-2" /> Create Notification</Button>
+            </Link>
           </CardHeader>
           <CardContent className="flex items-end gap-4 overflow-x-auto whitespace-nowrap">
             <div className="inline-flex flex-col min-w-[180px] shrink-0">
