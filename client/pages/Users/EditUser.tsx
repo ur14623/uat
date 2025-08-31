@@ -122,8 +122,23 @@ export default function EditUser() {
                   </select>
                 </div>
                 <div className="md:col-span-2">
-                  <Label htmlFor="profilePicture">Profile Picture URL (optional)</Label>
-                  <Input id="profilePicture" type="url" value={form.profilePicture || ''} onChange={(e) => setForm({ ...(form as any), profilePicture: e.target.value })} placeholder="https://..." />
+                  <Label htmlFor="profilePicture">Profile Picture (optional)</Label>
+                  <input
+                    id="profilePicture"
+                    type="file"
+                    accept="image/*"
+                    className="mt-2 w-full"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const reader = new FileReader();
+                      reader.onload = () => setForm({ ...(form as any), profilePicture: String(reader.result) });
+                      reader.readAsDataURL(file);
+                    }}
+                  />
+                  {form.profilePicture && (
+                    <img src={form.profilePicture} alt="Preview" className="mt-2 h-20 w-20 rounded-full object-cover border" />
+                  )}
                 </div>
                 <div className="md:col-span-2">
                   <Button type="submit" className="w-full bg-brand hover:bg-brand-600" disabled={loading}><Save className="h-4 w-4 mr-2" /> {loading ? 'Saving...' : 'Save'}</Button>
