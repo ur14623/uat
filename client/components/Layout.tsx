@@ -401,7 +401,7 @@ export default function Layout({ children }: LayoutProps) {
                               "flex items-center gap-3 rounded-lg px-6 py-2 text-sm transition-colors ml-6",
                               isSubActive
                                 ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                                : "text-sidebar-foreground bg-sidebar-accent hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground",
                             )}
                             onClick={() => setSidebarOpen(false)}
                           >
