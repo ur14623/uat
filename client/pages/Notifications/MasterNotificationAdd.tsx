@@ -149,7 +149,7 @@ export default function MasterNotificationAdd() {
                   <Input className="mt-2" type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" />
                 </div>
               )}
-              <div className="md:col-span-2">
+              <div className="md:col-span-2 lg:col-span-3">
                 <Label>Notification Name</Label>
                 <Input className="mt-2" value={name} onChange={(e) => setName(e.target.value)} placeholder="Template name" />
               </div>
