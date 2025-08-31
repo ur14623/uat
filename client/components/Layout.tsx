@@ -171,12 +171,7 @@ const sidebarNavItems: NavigationItem[] = [
       {
         title: "International Rate",
         icon: List,
-        href: "/rate_mapping_table",
-      },
-      {
-        title: "Create New International Rate",
-        icon: Upload,
-        href: "/international_rate_upload",
+        href: "/international_rates",
       },
       {
         title: "Compare Rate Tariff",
