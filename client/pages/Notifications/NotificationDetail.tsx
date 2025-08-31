@@ -112,7 +112,7 @@ export default function NotificationDetail() {
                   <CardTitle>Edit Marketing Descriptions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4">
                     {(['en','am','om','so','ti'] as const).map((lang) => (
                       <div key={lang}>
                         <Label>Marketing ({lang.toUpperCase()})</Label>
@@ -127,14 +127,6 @@ export default function NotificationDetail() {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Finalized Content</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm whitespace-pre-wrap">{item.content}</div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         )}
