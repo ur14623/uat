@@ -1,32 +1,38 @@
-import Layout from '@/components/Layout';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Home, Settings as SettingsIcon, Lock } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import Layout from "@/components/Layout";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Home, Settings as SettingsIcon, Lock } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function SettingsPage() {
   const [darkMode, setDarkMode] = useState<boolean>(false);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const theme = localStorage.getItem('pref_theme');
-    setDarkMode(theme === 'dark');
+    const theme = localStorage.getItem("pref_theme");
+    setDarkMode(theme === "dark");
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('pref_theme', darkMode ? 'dark' : 'light');
+    localStorage.setItem("pref_theme", darkMode ? "dark" : "light");
     const root = document.documentElement;
-    if (darkMode) root.classList.add('dark');
-    else root.classList.remove('dark');
+    if (darkMode) root.classList.add("dark");
+    else root.classList.remove("dark");
   }, [darkMode]);
-
 
   return (
     <Layout>
@@ -61,7 +67,11 @@ export default function SettingsPage() {
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between">
               <Label htmlFor="darkMode">Dark Mode</Label>
-              <Switch id="darkMode" checked={darkMode} onCheckedChange={setDarkMode} />
+              <Switch
+                id="darkMode"
+                checked={darkMode}
+                onCheckedChange={setDarkMode}
+              />
             </div>
           </CardContent>
         </Card>
@@ -74,40 +84,53 @@ export default function SettingsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {message && (<div className="mb-3 text-green-700 bg-green-50 border border-green-200 rounded p-2">{message}</div>)}
-            {error && (<div className="mb-3 text-red-700 bg-red-50 border border-red-200 rounded p-2">{error}</div>)}
+            {message && (
+              <div className="mb-3 text-green-700 bg-green-50 border border-green-200 rounded p-2">
+                {message}
+              </div>
+            )}
+            {error && (
+              <div className="mb-3 text-red-700 bg-red-50 border border-red-200 rounded p-2">
+                {error}
+              </div>
+            )}
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
                 setMessage(null);
                 setError(null);
                 if (!currentPassword || !newPassword || !confirmPassword) {
-                  setError('Please fill all fields');
+                  setError("Please fill all fields");
                   return;
                 }
                 if (newPassword !== confirmPassword) {
-                  setError('New passwords do not match');
+                  setError("New passwords do not match");
                   return;
                 }
                 if (newPassword.length < 6) {
-                  setError('Password must be at least 6 characters');
+                  setError("Password must be at least 6 characters");
                   return;
                 }
                 setSaving(true);
                 try {
-                  const res = await fetch('/api/users/password', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId: 'self', currentPassword, newPassword, confirmPassword }),
+                  const res = await fetch("/api/users/password", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      userId: "self",
+                      currentPassword,
+                      newPassword,
+                      confirmPassword,
+                    }),
                   });
                   const data = await res.json();
-                  if (!res.ok) throw new Error(data?.error || 'Failed');
-                  setMessage(data?.message || 'Password updated successfully');
-                  setCurrentPassword('');
-                  setNewPassword('');
-                  setConfirmPassword('');
+                  if (!res.ok) throw new Error(data?.error || "Failed");
+                  setMessage(data?.message || "Password updated successfully");
+                  setCurrentPassword("");
+                  setNewPassword("");
+                  setConfirmPassword("");
                 } catch (e: any) {
-                  setError(e.message || 'Error');
+                  setError(e.message || "Error");
                 } finally {
                   setSaving(false);
                 }
@@ -116,19 +139,44 @@ export default function SettingsPage() {
             >
               <div>
                 <Label htmlFor="currentPassword">Current Password</Label>
-                <input id="currentPassword" type="password" className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required />
+                <input
+                  id="currentPassword"
+                  type="password"
+                  className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  required
+                />
               </div>
               <div>
                 <Label htmlFor="newPassword">New Password</Label>
-                <input id="newPassword" type="password" className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+                <input
+                  id="newPassword"
+                  type="password"
+                  className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                />
               </div>
               <div className="md:col-span-2">
                 <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                <input id="confirmPassword" type="password" className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
               </div>
               <div className="md:col-span-2">
-                <button type="submit" disabled={saving} className="w-full h-10 rounded-md bg-brand text-white hover:bg-brand-600 disabled:opacity-50">
-                  {saving ? 'Updating...' : 'Update Password'}
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="w-full h-10 rounded-md bg-brand text-white hover:bg-brand-600 disabled:opacity-50"
+                >
+                  {saving ? "Updating..." : "Update Password"}
                 </button>
               </div>
             </form>

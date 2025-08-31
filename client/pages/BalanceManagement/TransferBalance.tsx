@@ -1,19 +1,32 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { ArrowLeftRight, Home } from 'lucide-react';
-import { useState } from 'react';
-import Layout from '@/components/Layout';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { ArrowLeftRight, Home } from "lucide-react";
+import { useState } from "react";
+import Layout from "@/components/Layout";
 
 const msisdnRegex = /^\+?\d{8,15}$/;
 
 export default function TransferBalance() {
-  const [sender, setSender] = useState('');
-  const [receiver, setReceiver] = useState('');
-  const [amount, setAmount] = useState('');
+  const [sender, setSender] = useState("");
+  const [receiver, setReceiver] = useState("");
+  const [amount, setAmount] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -24,30 +37,32 @@ export default function TransferBalance() {
     setError(null);
 
     if (!msisdnRegex.test(sender) || !msisdnRegex.test(receiver)) {
-      setError('Please enter valid MSISDNs for both A-Party (sender) and B-Party (receiver).');
+      setError(
+        "Please enter valid MSISDNs for both A-Party (sender) and B-Party (receiver).",
+      );
       return;
     }
     const amt = Number(amount);
     if (!Number.isInteger(amt) || amt <= 0) {
-      setError('Amount must be a positive integer.');
+      setError("Amount must be a positive integer.");
       return;
     }
 
     setLoading(true);
     try {
-      const res = await fetch('/api/balance/transfer', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/balance/transfer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sender, receiver, amount: amt }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || 'Failed to transfer balance');
-      setMessage(data?.message || 'Balance transferred successfully.');
-      setSender('');
-      setReceiver('');
-      setAmount('');
+      if (!res.ok) throw new Error(data?.error || "Failed to transfer balance");
+      setMessage(data?.message || "Balance transferred successfully.");
+      setSender("");
+      setReceiver("");
+      setAmount("");
     } catch (err: any) {
-      setError(err.message || 'An error occurred.');
+      setError(err.message || "An error occurred.");
     } finally {
       setLoading(false);
     }
@@ -72,8 +87,12 @@ export default function TransferBalance() {
         </Breadcrumb>
 
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Transfer Balance</h1>
-          <p className="text-muted-foreground">Move balance from A-Party (sender) to B-Party (receiver)</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Transfer Balance
+          </h1>
+          <p className="text-muted-foreground">
+            Move balance from A-Party (sender) to B-Party (receiver)
+          </p>
         </div>
 
         {message && (
@@ -93,26 +112,53 @@ export default function TransferBalance() {
               <ArrowLeftRight className="h-5 w-5" />
               Transfer Balance
             </CardTitle>
-            <CardDescription>Provide A-Party, B-Party and amount to transfer</CardDescription>
+            <CardDescription>
+              Provide A-Party, B-Party and amount to transfer
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={submit} className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
                 <div>
                   <Label htmlFor="sender">A-Party (Sender)</Label>
-                  <Input id="sender" value={sender} onChange={(e) => setSender(e.target.value)} placeholder="MSISDN" required />
+                  <Input
+                    id="sender"
+                    value={sender}
+                    onChange={(e) => setSender(e.target.value)}
+                    placeholder="MSISDN"
+                    required
+                  />
                 </div>
                 <div>
                   <Label htmlFor="receiver">B-Party (Receiver)</Label>
-                  <Input id="receiver" value={receiver} onChange={(e) => setReceiver(e.target.value)} placeholder="MSISDN" required />
+                  <Input
+                    id="receiver"
+                    value={receiver}
+                    onChange={(e) => setReceiver(e.target.value)}
+                    placeholder="MSISDN"
+                    required
+                  />
                 </div>
                 <div>
                   <Label htmlFor="amount">Amount</Label>
-                  <Input id="amount" type="number" inputMode="numeric" pattern="[0-9]*" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Integer amount" required />
+                  <Input
+                    id="amount"
+                    type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="Integer amount"
+                    required
+                  />
                 </div>
               </div>
-              <Button type="submit" disabled={loading} className="w-full bg-brand hover:bg-brand-600">
-                {loading ? 'Sending...' : 'Send'}
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-brand hover:bg-brand-600"
+              >
+                {loading ? "Sending..." : "Send"}
               </Button>
             </form>
           </CardContent>

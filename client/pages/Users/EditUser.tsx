@@ -1,21 +1,28 @@
-import Layout from '@/components/Layout';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Home, Save } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import Layout from "@/components/Layout";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Home, Save } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface UserRow {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
-  role: 'Admin'|'QA'|'Business'|'User';
-  status: 'Active'|'Inactive';
+  role: "Admin" | "QA" | "Business" | "User";
+  status: "Active" | "Inactive";
   profilePicture?: string;
 }
 
@@ -31,7 +38,10 @@ export default function EditUser() {
     const load = async () => {
       const res = await fetch(`/api/users/${id}`);
       const data = await res.json();
-      if (!res.ok) { setError(data?.error || 'Failed to load'); return; }
+      if (!res.ok) {
+        setError(data?.error || "Failed to load");
+        return;
+      }
       setForm(data);
     };
     load();
@@ -45,16 +55,16 @@ export default function EditUser() {
     setMessage(null);
     try {
       const res = await fetch(`/api/users/${form.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || 'Update failed');
-      setMessage('Saved successfully');
-      setTimeout(() => nav('/user_management'), 800);
+      if (!res.ok) throw new Error(data?.error || "Update failed");
+      setMessage("Saved successfully");
+      setTimeout(() => nav("/user_management"), 800);
     } catch (e: any) {
-      setError(e.message || 'Error');
+      setError(e.message || "Error");
     } finally {
       setLoading(false);
     }
@@ -83,8 +93,16 @@ export default function EditUser() {
           <p className="text-muted-foreground">Update user details</p>
         </div>
 
-        {message && (<Alert className="border-green-200 bg-green-50 text-green-800"><AlertDescription>{message}</AlertDescription></Alert>)}
-        {error && (<Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>)}
+        {message && (
+          <Alert className="border-green-200 bg-green-50 text-green-800">
+            <AlertDescription>{message}</AlertDescription>
+          </Alert>
+        )}
+        {error && (
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
         {form && (
           <Card>
@@ -92,29 +110,71 @@ export default function EditUser() {
               <CardTitle>User #{form.id}</CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={save} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <form
+                onSubmit={save}
+                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+              >
                 <div>
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" value={form.firstName} onChange={(e) => setForm({ ...(form as any), firstName: e.target.value })} required />
+                  <Input
+                    id="firstName"
+                    value={form.firstName}
+                    onChange={(e) =>
+                      setForm({ ...(form as any), firstName: e.target.value })
+                    }
+                    required
+                  />
                 </div>
                 <div>
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" value={form.lastName} onChange={(e) => setForm({ ...(form as any), lastName: e.target.value })} required />
+                  <Input
+                    id="lastName"
+                    value={form.lastName}
+                    onChange={(e) =>
+                      setForm({ ...(form as any), lastName: e.target.value })
+                    }
+                    required
+                  />
                 </div>
                 <div>
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...(form as any), email: e.target.value })} required />
+                  <Input
+                    id="email"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) =>
+                      setForm({ ...(form as any), email: e.target.value })
+                    }
+                    required
+                  />
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <select id="status" value={form.status} onChange={(e) => setForm({ ...(form as any), status: e.target.value as any })} className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                  <select
+                    id="status"
+                    value={form.status}
+                    onChange={(e) =>
+                      setForm({
+                        ...(form as any),
+                        status: e.target.value as any,
+                      })
+                    }
+                    className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
                 <div className="md:col-span-2">
                   <Label htmlFor="role">Role</Label>
-                  <select id="role" value={form.role} onChange={(e) => setForm({ ...(form as any), role: e.target.value as any })} className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm">
+                  <select
+                    id="role"
+                    value={form.role}
+                    onChange={(e) =>
+                      setForm({ ...(form as any), role: e.target.value as any })
+                    }
+                    className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  >
                     <option value="Admin">Admin</option>
                     <option value="QA">QA</option>
                     <option value="Business">Business</option>
@@ -122,7 +182,9 @@ export default function EditUser() {
                   </select>
                 </div>
                 <div className="md:col-span-2">
-                  <Label htmlFor="profilePicture">Profile Picture (optional)</Label>
+                  <Label htmlFor="profilePicture">
+                    Profile Picture (optional)
+                  </Label>
                   <input
                     id="profilePicture"
                     type="file"
@@ -132,16 +194,31 @@ export default function EditUser() {
                       const file = e.target.files?.[0];
                       if (!file) return;
                       const reader = new FileReader();
-                      reader.onload = () => setForm({ ...(form as any), profilePicture: String(reader.result) });
+                      reader.onload = () =>
+                        setForm({
+                          ...(form as any),
+                          profilePicture: String(reader.result),
+                        });
                       reader.readAsDataURL(file);
                     }}
                   />
                   {form.profilePicture && (
-                    <img src={form.profilePicture} alt="Preview" className="mt-2 h-20 w-20 rounded-full object-cover border" />
+                    <img
+                      src={form.profilePicture}
+                      alt="Preview"
+                      className="mt-2 h-20 w-20 rounded-full object-cover border"
+                    />
                   )}
                 </div>
                 <div className="md:col-span-2">
-                  <Button type="submit" className="w-full bg-brand hover:bg-brand-600" disabled={loading}><Save className="h-4 w-4 mr-2" /> {loading ? 'Saving...' : 'Save'}</Button>
+                  <Button
+                    type="submit"
+                    className="w-full bg-brand hover:bg-brand-600"
+                    disabled={loading}
+                  >
+                    <Save className="h-4 w-4 mr-2" />{" "}
+                    {loading ? "Saving..." : "Save"}
+                  </Button>
                 </div>
               </form>
             </CardContent>

@@ -1,25 +1,38 @@
-import Layout from '@/components/Layout';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Home, Calculator } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import Layout from "@/components/Layout";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Home, Calculator } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function TaxCalculator() {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const parsed = useMemo(() => {
     const val = Number(input);
     if (!input.trim()) return null;
-    if (!Number.isFinite(val) || val < 0) return 'invalid';
+    if (!Number.isFinite(val) || val < 0) return "invalid";
     return val;
   }, [input]);
 
   const result = useMemo(() => {
-    if (parsed === null || parsed === 'invalid') return null;
+    if (parsed === null || parsed === "invalid") return null;
     const TAX_RATE = 0.2075; // 20.75%
     const total = parsed; // gross mode only
     const effective = total / (1 + TAX_RATE);
@@ -28,7 +41,7 @@ export default function TaxCalculator() {
   }, [parsed]);
 
   useEffect(() => {
-    if (parsed === 'invalid') setError('Enter a valid non-negative number.');
+    if (parsed === "invalid") setError("Enter a valid non-negative number.");
     else setError(null);
   }, [parsed]);
 
@@ -51,46 +64,76 @@ export default function TaxCalculator() {
         </Breadcrumb>
 
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-1">Tax Calculation</h1>
-          <p className="text-muted-foreground">Instantly compute Effective, Tax (20.75%), and Total</p>
+          <h1 className="text-3xl font-bold text-foreground mb-1">
+            Tax Calculation
+          </h1>
+          <p className="text-muted-foreground">
+            Instantly compute Effective, Tax (20.75%), and Total
+          </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Calculator className="h-5 w-5" /> Calculator</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Calculator className="h-5 w-5" /> Calculator
+            </CardTitle>
             <CardDescription>Enter Total (Gross) amount</CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4">
             <div>
               <Label>Amount</Label>
-              <Input className="mt-2" inputMode="decimal" value={input} onChange={(e) => setInput(e.target.value)} placeholder="e.g. 1000" />
+              <Input
+                className="mt-2"
+                inputMode="decimal"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="e.g. 1000"
+              />
             </div>
           </CardContent>
         </Card>
 
-        {error && (<Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>)}
+        {error && (
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card>
-            <CardHeader><CardTitle className="text-base">Effective Amount</CardTitle></CardHeader>
-            <CardContent className="text-2xl font-bold">{result ? (() => {
-              const n = result.effective * 100;
-              const pow = 100000;
-              const sign = n < 0 ? -1 : 1;
-              const absScaled = Math.floor(Math.abs(n) * pow);
-              const str = String(absScaled).padStart(6, '0');
-              const intPart = str.length > 5 ? str.slice(0, -5) : '0';
-              const fracPart = str.slice(-5);
-              return `${sign < 0 ? '-' : ''}${intPart}.${fracPart}`;
-            })() : '—'}</CardContent>
+            <CardHeader>
+              <CardTitle className="text-base">Effective Amount</CardTitle>
+            </CardHeader>
+            <CardContent className="text-2xl font-bold">
+              {result
+                ? (() => {
+                    const n = result.effective * 100;
+                    const pow = 100000;
+                    const sign = n < 0 ? -1 : 1;
+                    const absScaled = Math.floor(Math.abs(n) * pow);
+                    const str = String(absScaled).padStart(6, "0");
+                    const intPart = str.length > 5 ? str.slice(0, -5) : "0";
+                    const fracPart = str.slice(-5);
+                    return `${sign < 0 ? "-" : ""}${intPart}.${fracPart}`;
+                  })()
+                : "—"}
+            </CardContent>
           </Card>
           <Card>
-            <CardHeader><CardTitle className="text-base">Tax Amount (20.75%)</CardTitle></CardHeader>
-            <CardContent className="text-2xl font-bold">{result ? result.tax.toFixed(2) : '—'}</CardContent>
+            <CardHeader>
+              <CardTitle className="text-base">Tax Amount (20.75%)</CardTitle>
+            </CardHeader>
+            <CardContent className="text-2xl font-bold">
+              {result ? result.tax.toFixed(2) : "—"}
+            </CardContent>
           </Card>
           <Card>
-            <CardHeader><CardTitle className="text-base">Total Amount</CardTitle></CardHeader>
-            <CardContent className="text-2xl font-bold">{result ? result.total.toFixed(2) : '—'}</CardContent>
+            <CardHeader>
+              <CardTitle className="text-base">Total Amount</CardTitle>
+            </CardHeader>
+            <CardContent className="text-2xl font-bold">
+              {result ? result.total.toFixed(2) : "—"}
+            </CardContent>
           </Card>
         </div>
       </div>

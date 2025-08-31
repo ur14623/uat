@@ -1,14 +1,21 @@
-import Layout from '@/components/Layout';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { Home } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
-import GenericProductsTable from '@/components/GenericProductsTable';
-import { productsByCategory } from '@/lib/mockProducts';
+import Layout from "@/components/Layout";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Home } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import GenericProductsTable from "@/components/GenericProductsTable";
+import { productsByCategory } from "@/lib/mockProducts";
 
 export default function CategoryBundles() {
   const { category } = useParams();
   const nav = useNavigate();
-  const cat = category || '';
+  const cat = category || "";
   const items = productsByCategory(cat, 12);
 
   return (
@@ -30,7 +37,12 @@ export default function CategoryBundles() {
         </Breadcrumb>
 
         <div className="flex justify-end">
-          <button onClick={() => nav('/bundle_list_new')} className="inline-flex items-center px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Add New Product</button>
+          <button
+            onClick={() => nav("/bundle_list_new")}
+            className="inline-flex items-center px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+          >
+            Add New Product
+          </button>
         </div>
         <GenericProductsTable
           title={`${cat} Products`}

@@ -1,15 +1,51 @@
-import { useState } from 'react';
-import Layout from '@/components/Layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { RotateCw, Smartphone, AlertCircle, CheckCircle, Search, Edit3, Home } from 'lucide-react';
+import { useState } from "react";
+import Layout from "@/components/Layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  RotateCw,
+  Smartphone,
+  AlertCircle,
+  CheckCircle,
+  Search,
+  Edit3,
+  Home,
+} from "lucide-react";
 
 interface BundleDetail {
   id: string;
@@ -29,11 +65,11 @@ interface ModalData {
 }
 
 // Fetch Form Component
-const FetchForm = ({ 
-  phoneNumber, 
-  setPhoneNumber, 
-  onSubmit, 
-  loading 
+const FetchForm = ({
+  phoneNumber,
+  setPhoneNumber,
+  onSubmit,
+  loading,
 }: {
   phoneNumber: string;
   setPhoneNumber: (value: string) => void;
@@ -92,10 +128,10 @@ const FetchForm = ({
 };
 
 // Bundles Table Component
-const BundlesTable = ({ 
-  bundlesDetails, 
-  onUpdateBundle, 
-  loading 
+const BundlesTable = ({
+  bundlesDetails,
+  onUpdateBundle,
+  loading,
 }: {
   bundlesDetails: BundleDetail[];
   onUpdateBundle: (bundle: BundleDetail) => void;
@@ -127,9 +163,7 @@ const BundlesTable = ({
           <RotateCw className="h-5 w-5" />
           Bundle Details ({bundlesDetails.length} found)
         </CardTitle>
-        <CardDescription>
-          Active bundles available for updating
-        </CardDescription>
+        <CardDescription>Active bundles available for updating</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="rounded-md border">
@@ -151,7 +185,9 @@ const BundlesTable = ({
                   <TableCell>
                     <div>
                       <p className="font-medium">{bundle.bundleName}</p>
-                      <p className="text-xs text-muted-foreground">NCC ID: {bundle.nccId}</p>
+                      <p className="text-xs text-muted-foreground">
+                        NCC ID: {bundle.nccId}
+                      </p>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -162,20 +198,26 @@ const BundlesTable = ({
                   </TableCell>
                   <TableCell>{bundle.expiryDate}</TableCell>
                   <TableCell>
-                    <Badge className={
-                      bundle.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
-                      bundle.status === 'EXPIRED' ? 'bg-red-100 text-red-800' :
-                      'bg-yellow-100 text-yellow-800'
-                    }>
+                    <Badge
+                      className={
+                        bundle.status === "ACTIVE"
+                          ? "bg-green-100 text-green-800"
+                          : bundle.status === "EXPIRED"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-yellow-100 text-yellow-800"
+                      }
+                    >
                       {bundle.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-medium">KES {bundle.price.toFixed(2)}</TableCell>
+                  <TableCell className="font-medium">
+                    KES {bundle.price.toFixed(2)}
+                  </TableCell>
                   <TableCell>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
-                      disabled={bundle.status !== 'ACTIVE' || loading}
+                      disabled={bundle.status !== "ACTIVE" || loading}
                       onClick={() => onUpdateBundle(bundle)}
                     >
                       <Edit3 className="h-4 w-4 mr-1" />
@@ -193,13 +235,13 @@ const BundlesTable = ({
 };
 
 // Update Modal Component
-const UpdateModal = ({ 
-  modalData, 
-  setModalData, 
-  updateValue, 
-  setUpdateValue, 
-  onUpdateSubmit, 
-  loading 
+const UpdateModal = ({
+  modalData,
+  setModalData,
+  updateValue,
+  setUpdateValue,
+  onUpdateSubmit,
+  loading,
 }: {
   modalData: ModalData;
   setModalData: (data: ModalData) => void;
@@ -210,11 +252,14 @@ const UpdateModal = ({
 }) => {
   const handleClose = () => {
     setModalData({ bundle: null, show: false });
-    setUpdateValue('');
+    setUpdateValue("");
   };
 
   return (
-    <Dialog open={modalData.show} onOpenChange={(open) => !open && handleClose()}>
+    <Dialog
+      open={modalData.show}
+      onOpenChange={(open) => !open && handleClose()}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -225,7 +270,7 @@ const UpdateModal = ({
             Update the value for the selected bundle
           </DialogDescription>
         </DialogHeader>
-        
+
         {modalData.bundle && (
           <div className="py-4 space-y-4">
             {/* Bundle Information */}
@@ -273,9 +318,12 @@ const UpdateModal = ({
             {/* Preview */}
             {updateValue && (
               <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <p className="text-sm font-medium text-blue-800">Update Preview:</p>
+                <p className="text-sm font-medium text-blue-800">
+                  Update Preview:
+                </p>
                 <p className="text-sm text-blue-700">
-                  {modalData.bundle.currentValue} {modalData.bundle.unit} → {updateValue} {modalData.bundle.unit}
+                  {modalData.bundle.currentValue} {modalData.bundle.unit} →{" "}
+                  {updateValue} {modalData.bundle.unit}
                 </p>
               </div>
             )}
@@ -283,14 +331,10 @@ const UpdateModal = ({
         )}
 
         <DialogFooter>
-          <Button 
-            variant="outline" 
-            onClick={handleClose}
-            disabled={loading}
-          >
+          <Button variant="outline" onClick={handleClose} disabled={loading}>
             Cancel
           </Button>
-          <Button 
+          <Button
             onClick={onUpdateSubmit}
             disabled={loading || !updateValue}
             className="bg-brand hover:bg-brand-600"
@@ -301,7 +345,7 @@ const UpdateModal = ({
                 Updating...
               </div>
             ) : (
-              'Update Bundle'
+              "Update Bundle"
             )}
           </Button>
         </DialogFooter>
@@ -311,11 +355,7 @@ const UpdateModal = ({
 };
 
 // Alert Component
-const AlertComponent = ({ 
-  successMessage 
-}: { 
-  successMessage: string;
-}) => {
+const AlertComponent = ({ successMessage }: { successMessage: string }) => {
   if (!successMessage) return null;
 
   return (
@@ -329,65 +369,68 @@ const AlertComponent = ({
 };
 
 export default function UpdateBundle() {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [bundlesDetails, setBundlesDetails] = useState<BundleDetail[]>([]);
-  const [modalData, setModalData] = useState<ModalData>({ bundle: null, show: false });
-  const [updateValue, setUpdateValue] = useState('');
+  const [modalData, setModalData] = useState<ModalData>({
+    bundle: null,
+    show: false,
+  });
+  const [updateValue, setUpdateValue] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Mock bundle data
   const mockBundles: BundleDetail[] = [
     {
-      id: 'B001',
-      bundleName: 'Data Starter 1GB',
-      bundleType: 'Data',
-      currentValue: '756',
-      unit: 'MB',
-      expiryDate: '2024-02-09',
-      status: 'ACTIVE',
-      price: 99.00,
-      nccId: 'CBU001'
+      id: "B001",
+      bundleName: "Data Starter 1GB",
+      bundleType: "Data",
+      currentValue: "756",
+      unit: "MB",
+      expiryDate: "2024-02-09",
+      status: "ACTIVE",
+      price: 99.0,
+      nccId: "CBU001",
     },
     {
-      id: 'B002',
-      bundleName: 'Voice Bundle',
-      bundleType: 'Voice',
-      currentValue: '234',
-      unit: 'Minutes',
-      expiryDate: '2024-01-20',
-      status: 'ACTIVE',
-      price: 150.00,
-      nccId: 'EBU002'
+      id: "B002",
+      bundleName: "Voice Bundle",
+      bundleType: "Voice",
+      currentValue: "234",
+      unit: "Minutes",
+      expiryDate: "2024-01-20",
+      status: "ACTIVE",
+      price: 150.0,
+      nccId: "EBU002",
     },
     {
-      id: 'B003',
-      bundleName: 'SMS Bundle',
-      bundleType: 'SMS',
-      currentValue: '567',
-      unit: 'SMS',
-      expiryDate: '2024-01-25',
-      status: 'ACTIVE',
-      price: 50.00,
-      nccId: 'CBU003'
+      id: "B003",
+      bundleName: "SMS Bundle",
+      bundleType: "SMS",
+      currentValue: "567",
+      unit: "SMS",
+      expiryDate: "2024-01-25",
+      status: "ACTIVE",
+      price: 50.0,
+      nccId: "CBU003",
     },
     {
-      id: 'B004',
-      bundleName: 'Expired Data Bundle',
-      bundleType: 'Data',
-      currentValue: '0',
-      unit: 'MB',
-      expiryDate: '2024-01-15',
-      status: 'EXPIRED',
-      price: 200.00,
-      nccId: 'CBU004'
-    }
+      id: "B004",
+      bundleName: "Expired Data Bundle",
+      bundleType: "Data",
+      currentValue: "0",
+      unit: "MB",
+      expiryDate: "2024-01-15",
+      status: "EXPIRED",
+      price: 200.0,
+      nccId: "CBU004",
+    },
   ];
 
   const handleFetchBundles = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setSuccessMessage('');
+    setSuccessMessage("");
     setBundlesDetails([]);
 
     try {
@@ -397,16 +440,17 @@ export default function UpdateBundle() {
       }
 
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      if (Math.random() > 0.1) { // 90% success rate
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      if (Math.random() > 0.1) {
+        // 90% success rate
         setBundlesDetails(mockBundles);
         setSuccessMessage(`Successfully fetched bundles for ${phoneNumber}`);
       } else {
-        setSuccessMessage(''); // Clear success message on error
+        setSuccessMessage(""); // Clear success message on error
       }
     } catch (error) {
-      setSuccessMessage('');
+      setSuccessMessage("");
     } finally {
       setLoading(false);
     }
@@ -421,32 +465,35 @@ export default function UpdateBundle() {
     if (!modalData.bundle || !updateValue) return;
 
     setLoading(true);
-    
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      if (Math.random() > 0.05) { // 95% success rate
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      if (Math.random() > 0.05) {
+        // 95% success rate
         // Update bundle in the list
-        setBundlesDetails(prev => prev.map(bundle => 
-          bundle.id === modalData.bundle!.id 
-            ? { ...bundle, currentValue: updateValue }
-            : bundle
-        ));
-        
+        setBundlesDetails((prev) =>
+          prev.map((bundle) =>
+            bundle.id === modalData.bundle!.id
+              ? { ...bundle, currentValue: updateValue }
+              : bundle,
+          ),
+        );
+
         setSuccessMessage(
           `Successfully updated ${modalData.bundle.bundleName} for ${phoneNumber}. ` +
-          `New value: ${updateValue} ${modalData.bundle.unit}`
+            `New value: ${updateValue} ${modalData.bundle.unit}`,
         );
-        
+
         // Close modal
         setModalData({ bundle: null, show: false });
-        setUpdateValue('');
+        setUpdateValue("");
       } else {
-        setSuccessMessage('Failed to update bundle. Please try again.');
+        setSuccessMessage("Failed to update bundle. Please try again.");
       }
     } catch (error) {
-      setSuccessMessage('An error occurred while updating the bundle.');
+      setSuccessMessage("An error occurred while updating the bundle.");
     } finally {
       setLoading(false);
     }
@@ -473,14 +520,16 @@ export default function UpdateBundle() {
 
         {/* Page Title */}
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Update Bundle</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Update Bundle
+          </h1>
           <p className="text-muted-foreground">
             Search and update bundle values for customer accounts
           </p>
         </div>
 
         {/* Fetch Form */}
-        <FetchForm 
+        <FetchForm
           phoneNumber={phoneNumber}
           setPhoneNumber={setPhoneNumber}
           onSubmit={handleFetchBundles}
@@ -500,7 +549,7 @@ export default function UpdateBundle() {
         )}
 
         {/* Update Modal */}
-        <UpdateModal 
+        <UpdateModal
           modalData={modalData}
           setModalData={setModalData}
           updateValue={updateValue}
