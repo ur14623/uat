@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleGift } from "./routes/gift";
+import { handleTransferBalance } from "./routes/transfer";
 import { handleLoan } from "./routes/loan";
 import { handleSubscriptions } from "./routes/subscriptions";
 import { handleGetCvmBuckets, handleCvmSubscribe } from "./routes/cvm";
@@ -63,6 +64,9 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Balance APIs
+  app.post("/api/balance/transfer", handleTransferBalance);
 
   // Bundle Management APIs (mock)
   app.post("/api/bundles/gift", handleGift);

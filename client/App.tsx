@@ -33,6 +33,7 @@ import NotFound from "./pages/NotFound";
 import AdjustBalance from "./pages/BalanceManagement/AdjustBalance";
 import PinRecharge from "./pages/BalanceManagement/PinRecharge";
 import PinlessRecharge from "./pages/BalanceManagement/PinlessRecharge";
+import TransferBalance from "./pages/BalanceManagement/TransferBalance";
 import CheckBalance from "./pages/BalanceManagement/CheckBalance";
 
 // Bundle Management Pages
@@ -194,6 +195,15 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <PinlessRecharge />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/transfer_balance"
+              element={
+                <ProtectedRoute>
+                  <TransferBalance />
                 </ProtectedRoute>
               }
             />
