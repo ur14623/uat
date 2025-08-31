@@ -104,9 +104,6 @@ export default function RoamingRates() {
         </div>
 
         <Card>
-          <CardHeader>
-            <CardTitle>Roaming Rate Table</CardTitle>
-          </CardHeader>
           <CardContent>
             <div className="flex items-end justify-between mb-3 gap-3">
               <div className="w-72">
