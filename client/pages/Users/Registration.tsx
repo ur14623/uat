@@ -17,6 +17,7 @@ export default function Registration() {
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [department, setDepartment] = useState('');
+  const [lineManager, setLineManager] = useState('');
   const [role, setRole] = useState<'Admin'|'QA'|'Business'|'User'>('User');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +28,7 @@ export default function Registration() {
     setMessage(null);
     setError(null);
 
-    if (!firstName || !lastName || !email || !password || !phoneNumber || !department) {
+    if (!firstName || !lastName || !email || !password || !phoneNumber || !department || !lineManager) {
       setError('Please fill all required fields.');
       return;
     }
@@ -37,7 +38,7 @@ export default function Registration() {
       const res = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email, password, role, phoneNumber, department }),
+        body: JSON.stringify({ firstName, lastName, email, password, role, phoneNumber, department, lineManager }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Registration failed');
@@ -108,6 +109,14 @@ export default function Registration() {
               <div>
                 <Label htmlFor="department">Department</Label>
                 <Input id="department" value={department} onChange={(e) => setDepartment(e.target.value)} required />
+              </div>
+              <div>
+                <Label htmlFor="department">Department</Label>
+                <Input id="department" value={department} onChange={(e) => setDepartment(e.target.value)} required />
+              </div>
+              <div>
+                <Label htmlFor="lineManager">Line Manager</Label>
+                <Input id="lineManager" value={lineManager} onChange={(e) => setLineManager(e.target.value)} required />
               </div>
               <div className="md:col-span-2">
                 <Label htmlFor="role">Role</Label>
