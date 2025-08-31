@@ -62,3 +62,18 @@ export const deleteUser: RequestHandler = (req, res) => {
   users.splice(idx, 1);
   res.json({ ok: true });
 };
+
+export const changePassword: RequestHandler = (req, res) => {
+  const { userId, currentPassword, newPassword, confirmPassword } = req.body || {};
+  if (!userId || !currentPassword || !newPassword || !confirmPassword) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ error: 'Passwords do not match' });
+  }
+  if (String(newPassword).length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  }
+  // Mock success (no real password storage in this demo)
+  return res.json({ ok: true, message: 'Password updated successfully' });
+};
