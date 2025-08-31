@@ -104,6 +104,7 @@ export default function InternationalRates() {
 
         <Card>
           <CardContent>
+            <div className="text-lg font-semibold mb-2">International Rate Table</div>
             <div className="flex items-center justify-between mb-3 gap-3">
               <div className="w-72">
                 <Input
