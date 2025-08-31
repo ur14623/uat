@@ -40,6 +40,7 @@ import {
   getUser,
   updateUser,
   deleteUser,
+  changePassword,
 } from "./routes/users";
 import {
   getBundleDetails,
