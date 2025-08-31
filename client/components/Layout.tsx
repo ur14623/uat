@@ -244,6 +244,13 @@ export default function Layout({ children }: LayoutProps) {
     setExpandedItems((prev) => (prev.includes(title) ? [] : [title]));
   };
 
+  // Keep parent expanded when a child route is active
+  useEffect(() => {
+    const parent = sidebarNavItems.find((it) => it.items?.some((sub) => sub.href === location.pathname));
+    if (parent) setExpandedItems([parent.title]);
+    else setExpandedItems([]);
+  }, [location.pathname]);
+
   const isItemActive = (item: NavigationItem): boolean => {
     if (item.href) {
       return location.pathname === item.href;
