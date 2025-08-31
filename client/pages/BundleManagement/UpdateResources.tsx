@@ -52,38 +52,38 @@ const FetchForm = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={onSubmit} className="space-y-2">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center">
-            <Label htmlFor="phoneNumber" className="flex items-center gap-2 shrink-0">
-              <Smartphone className="h-4 w-4" />
-              MSISDN
-            </Label>
-            <Input
-              id="phoneNumber"
-              type="tel"
-              placeholder="e.g., +254712345678"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
-              className="md:max-w-md"
-            />
-            <Button
-              type="submit"
-              className="bg-brand hover:bg-brand-600 md:ml-2"
-              disabled={loading || !phoneNumber}
-            >
-              {loading ? (
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                  Fetching...
-                </div>
-              ) : (
-                <>
-                  <Search className="h-4 w-4 mr-2" />
-                  Fetch Bundles
-                </>
-              )}
-            </Button>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <Label htmlFor="phoneNumber">MSISDN</Label>
+              <Input
+                id="phoneNumber"
+                type="tel"
+                placeholder="e.g., +254712345678"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+            </div>
+            <div className="pt-6">
+              <Button
+                type="submit"
+                className="bg-brand hover:bg-brand-600"
+                disabled={loading || !phoneNumber}
+              >
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    Searching...
+                  </div>
+                ) : (
+                  <>
+                    <Search className="h-4 w-4 mr-2" />
+                    Search Bundle
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </form>
       </CardContent>
