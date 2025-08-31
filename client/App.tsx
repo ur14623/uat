@@ -52,6 +52,8 @@ import TaxCalculator from "./pages/Utilities/TaxCalculator";
 import BundleConfigGenerator from "./pages/Utilities/BundleConfigGenerator";
 import RoamingRateUpload from "./pages/Rates/RoamingRateUpload";
 import RoamingRates from "./pages/Rates/RoamingRates";
+import InternationalRateUpload from "./pages/Rates/InternationalRateUpload";
+import InternationalRates from "./pages/Rates/InternationalRates";
 import RateMappingTable from "./pages/Rates/RateMappingTable";
 import RateMappingCompare from "./pages/Rates/RateMappingCompare";
 
@@ -326,6 +328,22 @@ const App = () => (
               element={
                 <ProtectedRoute adminOnly>
                   <RoamingRates />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/international_rates"
+              element={
+                <ProtectedRoute adminOnly>
+                  <InternationalRates />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/international_rate_upload"
+              element={
+                <ProtectedRoute adminOnly>
+                  <InternationalRateUpload />
                 </ProtectedRoute>
               }
             />

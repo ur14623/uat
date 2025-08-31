@@ -30,6 +30,9 @@ import {
   downloadMappingCsv,
   compareMappingTables,
   getRoamingVersions,
+  uploadInternationalRates,
+  getInternationalRates,
+  getInternationalVersions,
 } from "./routes/rates";
 import {
   listUsers,
@@ -91,6 +94,12 @@ export function createServer() {
   app.post("/api/rates/roaming/upload", uploadRoamingRates);
   app.get("/api/rates/roaming", getRoamingRates);
   app.get("/api/rates/roaming/versions", getRoamingVersions);
+  app.post("/api/rates/roaming/upload", uploadRoamingRates);
+
+  app.get("/api/rates/international", getInternationalRates);
+  app.get("/api/rates/international/versions", getInternationalVersions);
+  app.post("/api/rates/international/upload", uploadInternationalRates);
+
   app.get("/api/rates/roaming/download-excel", downloadRoamingExcel);
   app.get("/api/rates/roaming/download-zip", downloadRateIdsZip);
   app.get("/api/rates/mapping", getMappingTable);
