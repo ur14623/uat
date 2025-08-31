@@ -223,10 +223,7 @@ const sidebarNavItems: NavigationItem[] = [
 
 export default function Layout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [expandedItems, setExpandedItems] = useState<string[]>([
-    "Balance Management",
-    "Bundle Management",
-  ]);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const location = useLocation();
   const { user, logout } = useAuth();
 
@@ -237,11 +234,7 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   const toggleExpanded = (title: string) => {
-    setExpandedItems((prev) =>
-      prev.includes(title)
-        ? prev.filter((item) => item !== title)
-        : [...prev, title],
-    );
+    setExpandedItems((prev) => (prev.includes(title) ? [] : [title]));
   };
 
   const isItemActive = (item: NavigationItem): boolean => {
