@@ -110,7 +110,7 @@ export default function BundleConfigGenerator() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2"><Settings className="h-5 w-5" /> Configuration</CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
             <div>
               <Label>Channel</Label>
               <Input className="mt-2" value={channel} onChange={(e) => setChannel(e.target.value)} placeholder="e.g., USSD, APP" />
