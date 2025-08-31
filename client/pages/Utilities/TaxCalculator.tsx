@@ -71,7 +71,7 @@ export default function TaxCalculator() {
             <CardTitle className="flex items-center gap-2"><Calculator className="h-5 w-5" /> Calculator</CardTitle>
             <CardDescription>Choose your input type and enter an amount</CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 gap-4">
+          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label>Input Type</Label>
               <Select value={inputType} onValueChange={(v) => setInputType(v as 'net'|'gross')}>
