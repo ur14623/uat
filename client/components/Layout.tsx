@@ -94,6 +94,11 @@ const sidebarNavItems: NavigationItem[] = [
         icon: Eye,
         href: "/update_and_balance_info",
       },
+      {
+        title: "Transfer Balance",
+        icon: ArrowLeftRight,
+        href: "/transfer_balance",
+      },
     ],
   },
   {
