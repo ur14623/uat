@@ -6,6 +6,8 @@ import { Home } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 interface RateRow {
   country: string;
@@ -70,20 +72,25 @@ export default function RoamingRates() {
             <h1 className="text-3xl font-bold text-foreground mb-2">Roaming Rates</h1>
             <p className="text-muted-foreground">Select a version to view its roaming rates</p>
           </div>
-          <div className="w-64">
-            <Label className="text-sm mb-1 block">Version</Label>
-            <Select value={selectedVersion} onValueChange={setSelectedVersion}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select version" />
-              </SelectTrigger>
-              <SelectContent>
-                {versions.map((v) => (
-                  <SelectItem key={v.id} value={v.id}>
-                    {v.id} — {new Date(v.createdAt).toLocaleString()}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="flex items-end gap-3">
+            <div className="w-64">
+              <Label className="text-sm mb-1 block">Version</Label>
+              <Select value={selectedVersion} onValueChange={setSelectedVersion}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select version" />
+                </SelectTrigger>
+                <SelectContent>
+                  {versions.map((v) => (
+                    <SelectItem key={v.id} value={v.id}>
+                      {v.id} — {new Date(v.createdAt).toLocaleString()}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <Link to="/roaming_rate_upload">
+              <Button className="bg-brand hover:bg-brand-600">Create New Rate</Button>
+            </Link>
           </div>
         </div>
 
