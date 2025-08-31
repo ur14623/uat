@@ -107,7 +107,6 @@ export default function RoamingRates() {
           <CardContent>
             <div className="flex items-end justify-between mb-3 gap-3">
               <div className="w-72">
-                <Label htmlFor="search">Search Countries</Label>
                 <Input
                   id="search"
                   placeholder="Type a country name"
