@@ -11,6 +11,17 @@ export interface RoamingRateRow {
   receivingSms: number; // Birr/SMS
 }
 
+export interface InternationalRateRow {
+  country: string;
+  callToEthiopia: number;
+  callToLocal: number;
+  callToOther: number;
+  receivingCall: number;
+  dataMb: number;
+  sendingSms: number;
+  receivingSms: number;
+}
+
 export interface MappingRow {
   tariffPlanKey: string;
   callTypeKey: string;
@@ -32,6 +43,9 @@ let zipFileName: string | null = null;
 
 const versionDatasets: Record<string, RoamingRateRow[]> = {};
 let versions: RateVersionMeta[] = [];
+
+const intlVersionDatasets: Record<string, InternationalRateRow[]> = {};
+let intlVersions: RateVersionMeta[] = [];
 
 function seedSample() {
   const v1: RoamingRateRow[] = [
@@ -58,13 +72,34 @@ function seedSample() {
   ];
   excelFileName = 'roaming_rates.csv';
   zipFileName = 'rate_ids.zip';
+
+  // International versions
+  const iv1: InternationalRateRow[] = [
+    { country: 'Kenya', callToEthiopia: 30, callToLocal: 20, callToOther: 40, receivingCall: 12, dataMb: 2.2, sendingSms: 1.2, receivingSms: 0.6 },
+    { country: 'Tanzania', callToEthiopia: 29, callToLocal: 19, callToOther: 39, receivingCall: 11, dataMb: 2.0, sendingSms: 1.1, receivingSms: 0.6 },
+  ];
+  const iv2: InternationalRateRow[] = [
+    { country: 'Kenya', callToEthiopia: 31, callToLocal: 21, callToOther: 41, receivingCall: 12, dataMb: 2.3, sendingSms: 1.3, receivingSms: 0.6 },
+    { country: 'Tanzania', callToEthiopia: 30, callToLocal: 20, callToOther: 40, receivingCall: 11, dataMb: 2.05, sendingSms: 1.15, receivingSms: 0.6 },
+    { country: 'Uganda', callToEthiopia: 28, callToLocal: 18, callToOther: 38, receivingCall: 10, dataMb: 1.9, sendingSms: 1.0, receivingSms: 0.6 },
+  ];
+  intlVersionDatasets['v1'] = iv1;
+  intlVersionDatasets['v2'] = iv2;
+  intlVersions = [
+    { id: 'v2', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString() },
+    { id: 'v1', createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 40).toISOString() },
+  ];
 }
 seedSample();
 
 export const uploadRoamingRates: RequestHandler = (_req, res) => {
-  // In this mock, we accept the upload and seed sample data
   seedSample();
-  return res.json({ message: 'Upload received. File validated and processed successfully.', excelFileName, zipFileName });
+  return res.json({ message: 'Upload received. File validated and processed successfully.' });
+};
+
+export const uploadInternationalRates: RequestHandler = (_req, res) => {
+  seedSample();
+  return res.json({ message: 'International rates uploaded successfully.' });
 };
 
 export const getRoamingRates: RequestHandler = (req, res) => {
@@ -114,4 +149,14 @@ export const compareMappingTables: RequestHandler = (_req, res) => {
 
 export const getRoamingVersions: RequestHandler = (_req, res) => {
   return res.json({ versions });
+};
+
+export const getInternationalRates: RequestHandler = (req, res) => {
+  const version = (req.query.version as string) || intlVersions[0]?.id || 'v1';
+  const items = intlVersionDatasets[version] || intlVersionDatasets[intlVersions[0]?.id || 'v1'] || [];
+  return res.json({ items, version });
+};
+
+export const getInternationalVersions: RequestHandler = (_req, res) => {
+  return res.json({ versions: intlVersions });
 };
