@@ -16,6 +16,7 @@ interface UserRow {
   email: string;
   role: 'Admin'|'QA'|'Business'|'User';
   status: 'Active'|'Inactive';
+  profilePicture?: string;
 }
 
 export default function EditUser() {
@@ -119,6 +120,10 @@ export default function EditUser() {
                     <option value="Business">Business</option>
                     <option value="User">User</option>
                   </select>
+                </div>
+                <div className="md:col-span-2">
+                  <Label htmlFor="profilePicture">Profile Picture URL (optional)</Label>
+                  <Input id="profilePicture" type="url" value={form.profilePicture || ''} onChange={(e) => setForm({ ...(form as any), profilePicture: e.target.value })} placeholder="https://..." />
                 </div>
                 <div className="md:col-span-2">
                   <Button type="submit" className="w-full bg-brand hover:bg-brand-600" disabled={loading}><Save className="h-4 w-4 mr-2" /> {loading ? 'Saving...' : 'Save'}</Button>
