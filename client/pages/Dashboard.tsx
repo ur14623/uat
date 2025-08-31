@@ -246,7 +246,7 @@ export default function Dashboard() {
         </div>
 
         {/* All Products Table */}
-        <GenericProductsTable title={tableTitle} items={rows} includeCategory />
+        <GenericProductsTable title={tableTitle} items={rows} includeCategory showActions={false} />
       </div>
     </Layout>
   );
