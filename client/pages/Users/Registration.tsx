@@ -18,6 +18,7 @@ export default function Registration() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [department, setDepartment] = useState('');
   const [lineManager, setLineManager] = useState('');
+  const [profilePicture, setProfilePicture] = useState('');
   const [role, setRole] = useState<'Admin'|'QA'|'Business'|'User'>('User');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +39,7 @@ export default function Registration() {
       const res = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email, password, role, phoneNumber, department, lineManager }),
+        body: JSON.stringify({ firstName, lastName, email, password, role, phoneNumber, department, lineManager, profilePicture: profilePicture || undefined }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Registration failed');
@@ -126,6 +127,10 @@ export default function Registration() {
                   <option value="Business">Business</option>
                   <option value="User">User</option>
                 </select>
+              </div>
+              <div className="md:col-span-2">
+                <Label htmlFor="profilePicture">Profile Picture URL (optional)</Label>
+                <Input id="profilePicture" type="url" value={profilePicture} onChange={(e) => setProfilePicture(e.target.value)} placeholder="https://..." />
               </div>
               <div className="md:col-span-2">
                 <Button type="submit" className="w-full bg-brand hover:bg-brand-600" disabled={loading}>{loading ? 'Creating...' : 'Create'}</Button>
