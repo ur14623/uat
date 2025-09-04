@@ -15,7 +15,7 @@ import { Home, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function RoamingRateUpload() {
+export default function InternationalRateUpload() {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +37,7 @@ export default function RoamingRateUpload() {
     try {
       const fd = new FormData();
       fd.append("file", file);
-      const res = await fetch("/api/rates/roaming/upload", {
+      const res = await fetch("/api/rates/international/upload", {
         method: "POST",
         body: fd,
       });
@@ -66,17 +66,17 @@ export default function RoamingRateUpload() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Roaming Rate Upload</BreadcrumbPage>
+              <BreadcrumbPage>International Rate Upload</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
         <div>
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Roaming Rate Upload
+            International Rate Upload
           </h1>
           <p className="text-muted-foreground">
-            Upload a new roaming tariff CSV/XLS
+            Upload a new international tariff CSV/XLS
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export default function RoamingRateUpload() {
           <CardContent>
             <form onSubmit={submit} className="space-y-4">
               <div>
-                <Label>Roaming Tariff File (CSV/XLS)</Label>
+                <Label>International Tariff File (CSV/XLS)</Label>
                 <input
                   ref={fileRef}
                   type="file"

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -46,9 +45,11 @@ import {
   Banknote,
   Users,
   Upload,
+  ArrowLeftRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -92,6 +93,11 @@ const sidebarNavItems: NavigationItem[] = [
         title: "Check Balance",
         icon: Eye,
         href: "/update_and_balance_info",
+      },
+      {
+        title: "Transfer Balance",
+        icon: ArrowLeftRight,
+        href: "/transfer_balance",
       },
     ],
   },
@@ -142,7 +148,7 @@ const sidebarNavItems: NavigationItem[] = [
     ],
   },
   {
-    title: "Notifications",
+    title: "Notification Management",
     icon: Bell,
     roles: ["business", "admin"],
     items: [
@@ -159,46 +165,24 @@ const sidebarNavItems: NavigationItem[] = [
     ],
   },
   {
-    title: "Rates",
+    title: "Rate Management",
     icon: Globe,
     roles: ["admin"],
     items: [
       {
-        title: "Roaming Rate Upload",
-        icon: Upload,
-        href: "/roaming_rate_upload",
-      },
-      {
-        title: "Roaming Rates",
+        title: "Roaming Rate",
         icon: Globe,
         href: "/roaming_rates",
       },
       {
-        title: "Rate Mapping Table",
+        title: "International Rate",
         icon: List,
-        href: "/rate_mapping_table",
+        href: "/international_rates",
       },
       {
-        title: "Compare Tariff",
+        title: "Compare Rate Tariff",
         icon: RefreshCw,
         href: "/rate_mapping_compare",
-      },
-    ],
-  },
-  {
-    title: "Users",
-    icon: User,
-    roles: ["admin"],
-    items: [
-      {
-        title: "All Users",
-        icon: List,
-        href: "/user_management",
-      },
-      {
-        title: "Add User",
-        icon: UserPlus,
-        href: "/registration",
       },
     ],
   },
@@ -224,14 +208,28 @@ const sidebarNavItems: NavigationItem[] = [
       },
     ],
   },
+  {
+    title: "User Management",
+    icon: User,
+    roles: ["admin"],
+    items: [
+      {
+        title: "All Users",
+        icon: List,
+        href: "/user_management",
+      },
+      {
+        title: "Add User",
+        icon: UserPlus,
+        href: "/registration",
+      },
+    ],
+  },
 ];
 
 export default function Layout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [expandedItems, setExpandedItems] = useState<string[]>([
-    "Balance Management",
-    "Bundle Management",
-  ]);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const location = useLocation();
   const { user, logout } = useAuth();
 
@@ -242,12 +240,17 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   const toggleExpanded = (title: string) => {
-    setExpandedItems((prev) =>
-      prev.includes(title)
-        ? prev.filter((item) => item !== title)
-        : [...prev, title],
-    );
+    setExpandedItems((prev) => (prev.includes(title) ? [] : [title]));
   };
+
+  // Keep parent expanded when a child route is active
+  useEffect(() => {
+    const parent = sidebarNavItems.find((it) =>
+      it.items?.some((sub) => sub.href === location.pathname),
+    );
+    if (parent) setExpandedItems([parent.title]);
+    else setExpandedItems([]);
+  }, [location.pathname]);
 
   const isItemActive = (item: NavigationItem): boolean => {
     if (item.href) {
@@ -316,13 +319,17 @@ export default function Layout({ children }: LayoutProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  Profile
+                <DropdownMenuItem asChild>
+                  <Link to="/profile" className="flex items-center">
+                    <User className="mr-2 h-4 w-4" />
+                    Profile
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
+                <DropdownMenuItem asChild>
+                  <Link to="/settings" className="flex items-center">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Settings
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>
@@ -353,20 +360,22 @@ export default function Layout({ children }: LayoutProps) {
                 // Single-level navigation item
                 if (!item.items) {
                   return (
-                    <Link
+                    <NavLink
                       key={item.title}
                       to={item.href || "#"}
-                      className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                        isActive
-                          ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                      )}
+                      className={({ isActive }) =>
+                        cn(
+                          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                          isActive
+                            ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                            : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                        )
+                      }
                       onClick={() => setSidebarOpen(false)}
                     >
                       <Icon className="h-5 w-5" />
                       {item.title}
-                    </Link>
+                    </NavLink>
                   );
                 }
 
@@ -402,20 +411,22 @@ export default function Layout({ children }: LayoutProps) {
                         const isSubActive = location.pathname === subItem.href;
 
                         return (
-                          <Link
+                          <NavLink
                             key={subItem.href}
                             to={subItem.href || "#"}
-                            className={cn(
-                              "flex items-center gap-3 rounded-lg px-6 py-2 text-sm transition-colors ml-6",
-                              isSubActive
-                                ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                                : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                            )}
+                            className={({ isActive }) =>
+                              cn(
+                                "flex items-center gap-3 rounded-lg px-6 py-2 text-sm transition-colors ml-6",
+                                isActive
+                                  ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                                  : "text-sidebar-foreground bg-sidebar-accent hover:bg-sidebar-accent/80 hover:text-sidebar-accent-foreground",
+                              )
+                            }
                             onClick={() => setSidebarOpen(false)}
                           >
                             <SubIcon className="h-4 w-4" />
                             {subItem.title}
-                          </Link>
+                          </NavLink>
                         );
                       })}
                     </CollapsibleContent>

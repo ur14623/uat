@@ -7,7 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -41,7 +41,7 @@ interface RateRow {
   receivingSms: number;
 }
 
-export default function RoamingRates() {
+export default function InternationalRates() {
   const [items, setItems] = useState<RateRow[]>([]);
   const [versions, setVersions] = useState<{ id: string; createdAt: string }[]>(
     [],
@@ -53,7 +53,7 @@ export default function RoamingRates() {
 
   useEffect(() => {
     const loadVersions = async () => {
-      const res = await fetch("/api/rates/roaming/versions");
+      const res = await fetch("/api/rates/international/versions");
       const data = await res.json();
       if (res.ok && Array.isArray(data.versions)) {
         setVersions(data.versions);
@@ -68,7 +68,7 @@ export default function RoamingRates() {
     const loadRates = async () => {
       if (!selectedVersion) return;
       const res = await fetch(
-        `/api/rates/roaming?version=${encodeURIComponent(selectedVersion)}`,
+        `/api/rates/international?version=${encodeURIComponent(selectedVersion)}`,
       );
       const data = await res.json();
       if (res.ok) {
@@ -96,7 +96,7 @@ export default function RoamingRates() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Roaming Rates</BreadcrumbPage>
+              <BreadcrumbPage>International Rates</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -104,10 +104,10 @@ export default function RoamingRates() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground mb-2">
-              Roaming Rates
+              International Rates
             </h1>
             <p className="text-muted-foreground">
-              Select a version to view its roaming rates
+              Select a version to view its international rates
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -128,7 +128,7 @@ export default function RoamingRates() {
                 </SelectContent>
               </Select>
             </div>
-            <Link to="/roaming_rate_upload">
+            <Link to="/international_rate_upload">
               <Button className="bg-brand hover:bg-brand-600">
                 Create New Rate
               </Button>
@@ -138,7 +138,9 @@ export default function RoamingRates() {
 
         <Card>
           <CardContent>
-            <div className="text-lg font-semibold mb-2">Roaming Rate Table</div>
+            <div className="text-lg font-semibold mb-2">
+              International Rate Table
+            </div>
             <div className="flex items-center justify-between mb-3 gap-3">
               <div className="w-72">
                 <Input

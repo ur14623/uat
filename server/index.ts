@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleGift } from "./routes/gift";
+import { handleTransferBalance } from "./routes/transfer";
 import { handleLoan } from "./routes/loan";
 import { handleSubscriptions } from "./routes/subscriptions";
 import { handleGetCvmBuckets, handleCvmSubscribe } from "./routes/cvm";
@@ -29,6 +30,10 @@ import {
   getMappingTable,
   downloadMappingCsv,
   compareMappingTables,
+  getRoamingVersions,
+  uploadInternationalRates,
+  getInternationalRates,
+  getInternationalVersions,
 } from "./routes/rates";
 import {
   listUsers,
@@ -36,6 +41,7 @@ import {
   getUser,
   updateUser,
   deleteUser,
+  changePassword,
 } from "./routes/users";
 import {
   getBundleDetails,
@@ -58,6 +64,9 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Balance APIs
+  app.post("/api/balance/transfer", handleTransferBalance);
 
   // Bundle Management APIs (mock)
   app.post("/api/bundles/gift", handleGift);
@@ -89,6 +98,13 @@ export function createServer() {
   // Rates APIs (mock)
   app.post("/api/rates/roaming/upload", uploadRoamingRates);
   app.get("/api/rates/roaming", getRoamingRates);
+  app.get("/api/rates/roaming/versions", getRoamingVersions);
+  app.post("/api/rates/roaming/upload", uploadRoamingRates);
+
+  app.get("/api/rates/international", getInternationalRates);
+  app.get("/api/rates/international/versions", getInternationalVersions);
+  app.post("/api/rates/international/upload", uploadInternationalRates);
+
   app.get("/api/rates/roaming/download-excel", downloadRoamingExcel);
   app.get("/api/rates/roaming/download-zip", downloadRateIdsZip);
   app.get("/api/rates/mapping", getMappingTable);
@@ -101,6 +117,7 @@ export function createServer() {
   app.get("/api/users/:id", getUser);
   app.put("/api/users/:id", updateUser);
   app.delete("/api/users/:id", deleteUser);
+  app.post("/api/users/password", changePassword);
 
   return app;
 }

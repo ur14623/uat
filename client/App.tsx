@@ -13,6 +13,7 @@ import ProtectedRoute from "@/components/Auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import BundlePage from "./pages/BundlePage";
+import CategoryBundles from "./pages/CategoryBundles";
 import VoucherRecharge from "./pages/VoucherRecharge";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
@@ -33,6 +34,7 @@ import NotFound from "./pages/NotFound";
 import AdjustBalance from "./pages/BalanceManagement/AdjustBalance";
 import PinRecharge from "./pages/BalanceManagement/PinRecharge";
 import PinlessRecharge from "./pages/BalanceManagement/PinlessRecharge";
+import TransferBalance from "./pages/BalanceManagement/TransferBalance";
 import CheckBalance from "./pages/BalanceManagement/CheckBalance";
 
 // Bundle Management Pages
@@ -52,8 +54,12 @@ import TaxCalculator from "./pages/Utilities/TaxCalculator";
 import BundleConfigGenerator from "./pages/Utilities/BundleConfigGenerator";
 import RoamingRateUpload from "./pages/Rates/RoamingRateUpload";
 import RoamingRates from "./pages/Rates/RoamingRates";
+import InternationalRateUpload from "./pages/Rates/InternationalRateUpload";
+import InternationalRates from "./pages/Rates/InternationalRates";
 import RateMappingTable from "./pages/Rates/RateMappingTable";
 import RateMappingCompare from "./pages/Rates/RateMappingCompare";
+import Profile from "./pages/Profile";
+import SettingsPage from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -84,6 +90,15 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <BundlePage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/bundles/:category"
+              element={
+                <ProtectedRoute>
+                  <CategoryBundles />
                 </ProtectedRoute>
               }
             />
@@ -190,6 +205,15 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <PinlessRecharge />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/transfer_balance"
+              element={
+                <ProtectedRoute>
+                  <TransferBalance />
                 </ProtectedRoute>
               }
             />
@@ -330,6 +354,22 @@ const App = () => (
               }
             />
             <Route
+              path="/international_rates"
+              element={
+                <ProtectedRoute adminOnly>
+                  <InternationalRates />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/international_rate_upload"
+              element={
+                <ProtectedRoute adminOnly>
+                  <InternationalRateUpload />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/rate_mapping_table"
               element={
                 <ProtectedRoute adminOnly>
@@ -342,6 +382,24 @@ const App = () => (
               element={
                 <ProtectedRoute adminOnly>
                   <RateMappingCompare />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Profile & Settings */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <SettingsPage />
                 </ProtectedRoute>
               }
             />
